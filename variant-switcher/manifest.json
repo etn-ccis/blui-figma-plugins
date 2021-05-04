@@ -1,0 +1,7 @@
+{
+    "name": "Variant Switcher",
+    "id": "971482182464094790",
+    "api": "1.0.0",
+    "main": "code.js",
+    "ui": "ui.html"
+}
