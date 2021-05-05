@@ -1,13 +1,13 @@
 {
     "name": "figma-plugin-variant-switcher",
     "version": "1.0.0",
-    "description": "",
+    "description": "Figma plugin to switch instances into a designated variant.",
     "main": "code.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "",
-    "license": "ISC",
+    "author": "PX Blue",
+    "license": "",
     "dependencies": {
         "@figma/plugin-typings": "^1.16.1",
         "@types/react": "^16.8.23",

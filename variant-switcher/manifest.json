@@ -1,6 +1,6 @@
 {
     "name": "Variant Switcher",
-    "id": "738168449509241862",
+    "id": "971482182464094790",
     "api": "1.0.0",
     "main": "dist/code.js",
     "ui": "dist/ui.html"
