@@ -3,8 +3,9 @@ figma.showUI(__html__);
 const delimiter = ', ';
 
 function traverse(node: any, propertyName: string, fromVariant: string, toVariant: string) {
-    // find an instance instance
-    if (node.type == 'INSTANCE') {
+    // find an instance
+    // the instance need to come from some kind of component set (i.e., has a parent)
+    if (node && node.type == 'INSTANCE' && node.mainComponent.parent) {
         let nodeProperties = node.mainComponent.name.split(delimiter);
 
         // the instance comes from a component with variances set in them
