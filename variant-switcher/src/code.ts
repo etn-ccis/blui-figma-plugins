@@ -13,6 +13,8 @@ figma.clientStorage.getAsync(KEYS.TO_VARIANT).then((val) => {
     if (val) figma.ui.postMessage({ param: KEYS.TO_VARIANT, val });
 });
 
+let swapCount = 0;
+
 // show the UI when we finish initializing clientStorage
 setTimeout(() => {
     figma.ui.show();
@@ -45,6 +47,7 @@ function traverse(node: any, propertyName: string, fromVariant: string, toVarian
             // we found a sibling with the property swapped out
             if (changeToSibling) {
                 node.swapComponent(changeToSibling);
+                swapCount++;
             }
             // we couldn't find a good sibling with the exact property,
             // but try again to find at least one with the property we care about
@@ -55,6 +58,7 @@ function traverse(node: any, propertyName: string, fromVariant: string, toVarian
 
                 if (changeToSibling) {
                     node.swapComponent(changeToSibling);
+                    swapCount++;
                 }
             }
         }
@@ -82,6 +86,15 @@ figma.ui.onmessage = (msg) => {
     // the user didn't select anything, then let's change the entire page
     else {
         traverse(figma.currentPage, msg.propertyName, msg.fromVariant, msg.toVariant);
+    }
+
+    // snackbar feedback
+    if (swapCount === 0) {
+        figma.notify(`😕 Variant Switcher couldn't find anything to switch to "${msg.propertyName}=${msg.toVariant}".`);
+    } else if (swapCount === 1) {
+        figma.notify(`Changed 1 instance's "${msg.propertyName}" to "${msg.toVariant}".`);
+    } else {
+        figma.notify(`Changed ${swapCount} instances' "${msg.propertyName}" to "${msg.toVariant}".`);
     }
     figma.closePlugin();
 };
