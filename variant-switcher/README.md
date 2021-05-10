@@ -1,6 +1,6 @@
 # Variant Switcher
 
-![Banner](../_screenshots_/variant-switcher-banner.png)
+![Banner](../_assets_/variant-switcher/cover-art.svg)
 
 Given a selection of instances, recursively replace everything to a certain variant under a given property.
 
@@ -10,7 +10,7 @@ If "From Variant" is not supplied, then the plugin would look into any instances
 
 ## An Example
 
-![Example](../_screenshots_/variant-switcher-example.png)
+![Example](../_assets_/variant-switcher/example.png)
 
 ## Develop Plugin Locally
 
