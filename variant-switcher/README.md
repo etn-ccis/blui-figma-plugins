@@ -17,3 +17,5 @@ If "From Variant" is not supplied, then the plugin would look into any instances
 To run the plugin locally, first clone this repo. After that, go to Figma, then Plugins > Development > New Plugin. In the dialog box, do the "Link existing plugin" - "Click to choose a manifest.json". Locate `manifest.json` from the repo you just cloned.
 
 Then in your local repo, cd to this `variant-switcher` folder, and `yarn && npx webpack`. Then the plugin should be happily running.
+
+To build in production mode, run `npx webpack --production`. See results in `/dist` folder.
