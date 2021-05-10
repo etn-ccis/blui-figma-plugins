@@ -1,13 +1,47 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { KEYS } from './shared';
 import './ui.css';
 
 declare function require(path: string): any;
+
+const LOCAL_STORAGE_DATA = {};
+onmessage = (event) => {
+    LOCAL_STORAGE_DATA[event.data.pluginMessage.param] = event.data.pluginMessage.val;
+};
 
 const App: React.FC = () => {
     const [propertyName, setPropertyName] = React.useState('Theme');
     const [fromVariant, setFromVariant] = React.useState('Light');
     const [toVariant, setToVariant] = React.useState('Dark');
+
+    // load stored parameters from history
+    // use a timer to help picking up the async update from onmessage
+    React.useEffect(() => {
+        const timerPropertyName = setInterval(() => {
+            if (LOCAL_STORAGE_DATA[KEYS.PROPERTY_NAME]) {
+                setPropertyName(LOCAL_STORAGE_DATA[KEYS.PROPERTY_NAME]);
+                clearInterval(timerPropertyName);
+            }
+        }, 50);
+        const timerFromVariant = setInterval(() => {
+            if (LOCAL_STORAGE_DATA[KEYS.FROM_VARIANT] !== undefined) {
+                setFromVariant(LOCAL_STORAGE_DATA[KEYS.FROM_VARIANT]);
+                clearInterval(timerFromVariant);
+            }
+        }, 50);
+        const timerToVariant = setInterval(() => {
+            if (LOCAL_STORAGE_DATA[KEYS.TO_VARIANT]) {
+                setToVariant(LOCAL_STORAGE_DATA[KEYS.TO_VARIANT]);
+                clearInterval(timerToVariant);
+            }
+        }, 50);
+        return () => {
+            clearInterval(timerPropertyName);
+            clearInterval(timerFromVariant);
+            clearInterval(timerToVariant);
+        };
+    }, []);
 
     return (
         <div>

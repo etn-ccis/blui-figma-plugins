@@ -1,6 +1,22 @@
-figma.showUI(__html__);
+import { KEYS } from './shared';
+figma.showUI(__html__, { visible: false });
 
 const delimiter = ', ';
+
+figma.clientStorage.getAsync(KEYS.PROPERTY_NAME).then((val) => {
+    if (val) figma.ui.postMessage({ param: KEYS.PROPERTY_NAME, val });
+});
+figma.clientStorage.getAsync(KEYS.FROM_VARIANT).then((val) => {
+    if (val !== undefined) figma.ui.postMessage({ param: KEYS.FROM_VARIANT, val });
+});
+figma.clientStorage.getAsync(KEYS.TO_VARIANT).then((val) => {
+    if (val) figma.ui.postMessage({ param: KEYS.TO_VARIANT, val });
+});
+
+// show the UI when we finish initializing clientStorage
+setTimeout(() => {
+    figma.ui.show();
+}, 150);
 
 function traverse(node: any, propertyName: string, fromVariant: string, toVariant: string) {
     // find an instance
@@ -52,6 +68,11 @@ function traverse(node: any, propertyName: string, fromVariant: string, toVarian
 }
 
 figma.ui.onmessage = (msg) => {
+    // remember these params and save to client storage
+    figma.clientStorage.setAsync(KEYS.PROPERTY_NAME, msg.propertyName);
+    figma.clientStorage.setAsync(KEYS.FROM_VARIANT, msg.fromVariant);
+    figma.clientStorage.setAsync(KEYS.TO_VARIANT, msg.toVariant);
+
     // if user selected something, then we look at the selection
     if (figma.currentPage.selection.length) {
         for (const node of figma.currentPage.selection) {
