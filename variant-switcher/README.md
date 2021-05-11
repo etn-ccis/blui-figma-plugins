@@ -2,20 +2,46 @@
 
 ![Banner](../_assets_/variant-switcher/cover-art.svg)
 
-Given a selection of instances, recursively replace everything to a certain variant under a given property.
+The Variant Switcher plugin take all of your selected component instances and recursively changes them all to using a specified property / variant value.
 
-For example, if "Property Name" is set to "Theme", "From Variant" is set to "Light", and "To Variant" is set to "Dark", then this plugin will traverse through all selected nodes, see if there are any instances whose "Theme" property is set to "Light", and change them recursively to "Theme=Dark".
+## Usage
 
-If "From Variant" is not supplied, then the plugin would look into any instances with the property specified by "Property Name", and attempt to change it to "To Variant".
+The Variant Switcher plugin takes three inputs:
 
-## An Example
+| Input Field                     | Description                                                                                                                           | Required? |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| Property Name                   | the property / variant you want to change                                                                                             | yes       |
+| From Variant                    | the current value you want to target (leave blank to select all instances with the selected property regardless of the current value) | no        |
+| To Variant                      | the new value you want to set the property to                                                                                         | yes       |
+
+## Example
 
 ![Example](../_assets_/variant-switcher/example.png)
 
-## Develop Plugin Locally
+Consider the example above. In this case, all of the components have a `Theme` property (all of them have a "Light" and "Dark" variant and the Star has an additional "Blue" variant). When using the plugin, we set the `Property Name` field to "Theme", `From Variant` to "Light", and `To Variant` to "Dark". The plugin traverses through all selected nodes finding any instances whose `Theme` properties are set to "Light", and changes them to "Dark".
 
-To run the plugin locally, first clone this repo. After that, go to Figma, then Plugins > Development > New Plugin. In the dialog box, do the "Link existing plugin" - "Click to choose a manifest.json". Locate `manifest.json` from the repo you just cloned.
+> Notice that the Star component was unchanged because the current value of its `Theme` property was "Blue", not "Light". If we had left the "From Variant" field blank, then the Star would have also been changed because the plugin would select all nodes with the `Theme` property regardless of the current value.
 
-Then in your local repo, cd to this `variant-switcher` folder, and `yarn && npx webpack`. Then the plugin should be happily running.
 
-To build in production mode, run `npx webpack --mode production`. See results in `/dist` folder.
+## Running Plugin Locally (For Developers)
+
+To run the plugin locally, first clone the repository:
+```sh
+git clone https://github.com/pxblue/figma-plgins
+```
+
+Then, link the plugin to Figma:
+-   Open the Figma desktop app  and in the toolbar go to `Plugins > Development > New Plugin`. 
+-   In the dialog box, under "Link existing plugin" either click the box to select a file or drag and drop into the dotted box.
+    -   Use the `manifest.json` file from the repo you just cloned.
+
+Finally, build the plugin:
+
+```sh
+cd path/to/figma-plugins/variant-switcher
+yarn && npx webpack
+```
+
+The plugin should now be running happily.
+
+> To build in production mode, run `npx webpack --mode production`. See results in `/dist` folder.
