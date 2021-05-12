@@ -2,7 +2,7 @@
 
 ![Banner](../_assets_/variant-switcher/cover-art.svg)
 
-The Variant Switcher plugin take all of your selected component instances and recursively changes them all to using a specified property / variant value.
+The Variant Switcher plugin takes all of your selected component instances and recursively changes them to a different variant based on the specified property.
 
 ## Usage
 
@@ -10,7 +10,7 @@ The Variant Switcher plugin takes three inputs:
 
 | Input Field                     | Description                                                                                                                           | Required? |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| Property Name                   | the property / variant you want to change                                                                                             | yes       |
+| Property Name                   | the property you want to change                                                                                                       | yes       |
 | From Variant                    | the current value you want to target (leave blank to select all instances with the selected property regardless of the current value) | no        |
 | To Variant                      | the new value you want to set the property to                                                                                         | yes       |
 
