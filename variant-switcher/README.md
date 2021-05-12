@@ -27,7 +27,7 @@ Consider the example above. In this case, all of the components have a `Theme` p
 
 To run the plugin locally, first clone the repository:
 ```sh
-git clone https://github.com/pxblue/figma-plgins
+git clone https://github.com/pxblue/figma-plugins
 ```
 
 Then, link the plugin to Figma:
