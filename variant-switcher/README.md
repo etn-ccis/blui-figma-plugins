@@ -8,11 +8,11 @@ The Variant Switcher plugin takes all of your selected component instances and r
 
 The Variant Switcher plugin has three input fields:
 
-| Input Field                     | Description                                                                                                                           | Required? |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| Property Name                   | the property you want to change                                                                                                       | yes       |
-| From Variant                    | the current value you want to target (leave blank to select all instances with the selected property regardless of the current value) | no        |
-| To Variant                      | the new value you want to set the property to                                                                                         | yes       |
+| Input Field   | Description                                                                                                                           | Required? |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| Property Name | the property you want to change                                                                                                       | yes       |
+| From Variant  | the current value you want to target (leave blank to select all instances with the selected property regardless of the current value) | no        |
+| To Variant    | the new value you want to set the property to                                                                                         | yes       |
 
 ## Example
 
@@ -22,17 +22,18 @@ Consider the example above. In this case, all of the components have a `Theme` p
 
 > Notice that the Star component was unchanged because the current value of its `Theme` property was "Blue", not "Light". If we had left the "From Variant" field blank, then the Star would have also been changed because the plugin would select all nodes with the `Theme` property regardless of the current value.
 
-
 ## Running Plugin Locally (For Developers)
 
 To run the plugin locally, first clone the repository:
+
 ```sh
 git clone https://github.com/pxblue/figma-plugins
 ```
 
 Then, link the plugin to Figma:
--   Open the Figma desktop app  and in the toolbar go to `Plugins > Development > New Plugin`. 
--   In the dialog box, under "Link existing plugin" either click the box to select a file or drag and drop into the dotted box.
+
+-   Open the Figma desktop app and in the toolbar go to `Plugins > Development > New Plugin`.
+-   In the dialog box, under "Link existing plugin" either click the box to select a file or drag and drop it into the dotted box.
     -   Use the `manifest.json` file from the repo you just cloned.
 
 Finally, build the plugin:
