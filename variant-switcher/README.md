@@ -6,7 +6,7 @@ The Variant Switcher plugin takes all of your selected component instances and r
 
 ## Usage
 
-The Variant Switcher plugin takes three inputs:
+The Variant Switcher plugin has three input fields:
 
 | Input Field                     | Description                                                                                                                           | Required? |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------- |
