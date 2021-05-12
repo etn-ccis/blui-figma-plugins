@@ -1,5 +1,7 @@
 # Figma Plugins
 
-We currently have the following plugin:
+This library contains various plugins developed by the PX Blue team for use with [Figma](https://www.figma.com/).
 
--   [Variant Switcher](./variant-switcher/README.md): batch switch multiple component instances to variants sharing a same property.
+The following plugins are avalable:
+
+-   [Variant Switcher](./variant-switcher/README.md): recursively change all selected component instances from one variant / property to another.
