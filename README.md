@@ -4,4 +4,4 @@ This library contains various plugins developed by the PX Blue team for use with
 
 The following plugins are avalable:
 
--   [Variant Switcher](./variant-switcher/README.md): recursively change all selected component instances from one variant / property to another.
+-   [Variant Switcher](./variant-switcher/README.md): recursively swaps component variants based on a specified property value.
