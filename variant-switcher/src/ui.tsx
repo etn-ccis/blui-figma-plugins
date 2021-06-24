@@ -21,6 +21,7 @@ const App: React.FC = () => {
     const [propertyName, setPropertyName] = React.useState('Theme');
     const [fromVariant, setFromVariant] = React.useState('Light');
     const [toVariant, setToVariant] = React.useState('Dark');
+    const [deepSwap, setDeepSwap] = React.useState<'true' | 'false'>('false');
 
     // load stored parameters from history
     // use a timer to help picking up the async update from onmessage
@@ -43,12 +44,26 @@ const App: React.FC = () => {
                 clearInterval(timerToVariant);
             }
         }, 50);
+        const timerDeepSwap = setInterval(() => {
+            if (LOCAL_STORAGE_DATA[KEYS.DEEP_SWAP]) {
+                setDeepSwap(LOCAL_STORAGE_DATA[KEYS.DEEP_SWAP]);
+                clearInterval(timerDeepSwap);
+            }
+        }, 50);
         return () => {
             clearInterval(timerPropertyName);
             clearInterval(timerFromVariant);
             clearInterval(timerToVariant);
+            clearInterval(timerDeepSwap);
         };
     }, []);
+
+    // submit iff input fields are valid
+    const submit = React.useCallback(() => {
+        if (propertyName !== '' && toVariant !== '') {
+            parent.postMessage({ pluginMessage: { propertyName, fromVariant, toVariant, deepSwap } }, '*');
+        }
+    }, [propertyName, fromVariant, toVariant, deepSwap]);
 
     return (
         <div>
@@ -58,6 +73,11 @@ const App: React.FC = () => {
                     onChange={(e) => setPropertyName(e.target.value)}
                     name={'Name of the property shared by instances'}
                     value={propertyName}
+                    onKeyDown={(e) => {
+                        if (e.code === 'Enter') {
+                            submit();
+                        }
+                    }}
                 />
             </div>
             <div className={'input-row'}>
@@ -66,6 +86,11 @@ const App: React.FC = () => {
                     onChange={(e) => setFromVariant(e.target.value)}
                     name={'The variant name to change from'}
                     value={fromVariant}
+                    onKeyDown={(e) => {
+                        if (e.code === 'Enter') {
+                            submit();
+                        }
+                    }}
                 />
             </div>
             <div className={'input-row'}>
@@ -74,7 +99,27 @@ const App: React.FC = () => {
                     onChange={(e) => setToVariant(e.target.value)}
                     name={'The variant name to change into'}
                     value={toVariant}
+                    onKeyDown={(e) => {
+                        if (e.code === 'Enter') {
+                            submit();
+                        }
+                    }}
                 />
+            </div>
+            <div className={'checkbox-row'}>
+                <input
+                    type={'checkbox'}
+                    onChange={(e) => {
+                        setDeepSwap(e.target.value === 'true' ? 'false' : 'true');
+                    }}
+                    name={'swapChild'}
+                    value={deepSwap}
+                    checked={deepSwap === 'true'}
+                />
+                <label htmlFor={'swapChild'}>
+                    Deep swap
+                    <div className={'hint-text'}>Swap child layers after parent instances are swapped</div>
+                </label>
             </div>
 
             <div className={'button-row'}>
@@ -87,13 +132,7 @@ const App: React.FC = () => {
                 >
                     From {<ExchangeIcon />} To
                 </button>
-                <button
-                    className={'primary'}
-                    onClick={() => {
-                        parent.postMessage({ pluginMessage: { propertyName, fromVariant, toVariant } }, '*');
-                    }}
-                    disabled={propertyName === '' || toVariant === ''}
-                >
+                <button className={'primary'} onClick={submit} disabled={propertyName === '' || toVariant === ''}>
                     Change Variant
                 </button>
             </div>

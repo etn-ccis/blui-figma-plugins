@@ -40,9 +40,9 @@ Finally, build the plugin:
 
 ```sh
 cd path/to/figma-plugins/variant-switcher
-yarn && npx webpack
+yarn && yarn build
 ```
 
 The plugin should now be running happily.
 
-> To build in production mode, run `npx webpack --mode production`. See results in `/dist` folder.
+> To build in production mode, run `yarn && yarn build:production`. See results in `/dist` folder.

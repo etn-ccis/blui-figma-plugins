@@ -1,5 +1,5 @@
 import { KEYS } from './shared';
-figma.showUI(__html__, { visible: false });
+figma.showUI(__html__, { visible: false, height: 265 });
 
 const delimiter = ', ';
 
@@ -12,17 +12,23 @@ figma.clientStorage.getAsync(KEYS.FROM_VARIANT).then((val) => {
 figma.clientStorage.getAsync(KEYS.TO_VARIANT).then((val) => {
     if (val) figma.ui.postMessage({ param: KEYS.TO_VARIANT, val });
 });
+figma.clientStorage.getAsync(KEYS.DEEP_SWAP).then((val) => {
+    if (val) figma.ui.postMessage({ param: KEYS.DEEP_SWAP, val });
+});
 
 let swapCount = 0;
 
 // show the UI when we finish initializing clientStorage
 setTimeout(() => {
     figma.ui.show();
-}, 150);
+}, 250);
 
-function traverse(node: any, propertyName: string, fromVariant: string, toVariant: string) {
+function traverse(node: any, propertyName: string, fromVariant: string, toVariant: string, deepSwap: boolean) {
     // find an instance
     // the instance need to come from some kind of component set (i.e., has a parent)
+
+    let parentSwapped = false;
+
     if (node && node.type == 'INSTANCE' && node.mainComponent.parent) {
         let nodeProperties = node.mainComponent.name.split(delimiter);
 
@@ -39,7 +45,12 @@ function traverse(node: any, propertyName: string, fromVariant: string, toVarian
                 property.startsWith(`${propertyName}=`)
             );
         }
-        if (node.mainComponent.parent.type === 'COMPONENT_SET' && propertyIndex !== -1) {
+
+        // do not swap if somehow the instance is already on the "toVariant"
+        const isOnToVariant = nodeProperties.indexOf(`${propertyName}=${toVariant}`) !== -1;
+
+        // do the swapping
+        if (node.mainComponent.parent.type === 'COMPONENT_SET' && propertyIndex !== -1 && !isOnToVariant) {
             nodeProperties[propertyIndex] = `${propertyName}=${toVariant}`;
             let changeToSibling = node.mainComponent.parent.findChild(
                 (sibling: ComponentNode) => sibling.name === nodeProperties.join(delimiter)
@@ -47,6 +58,7 @@ function traverse(node: any, propertyName: string, fromVariant: string, toVarian
             // we found a sibling with the property swapped out
             if (changeToSibling) {
                 node.swapComponent(changeToSibling);
+                parentSwapped = true;
                 swapCount++;
             }
             // we couldn't find a good sibling with the exact property,
@@ -58,15 +70,17 @@ function traverse(node: any, propertyName: string, fromVariant: string, toVarian
 
                 if (changeToSibling) {
                     node.swapComponent(changeToSibling);
+                    parentSwapped = true;
                     swapCount++;
                 }
             }
         }
     }
     // now that we are done swapping, look to see if any child component is swappable
-    if ('children' in node) {
+    // if deepSwap is checked and parent is swapped, we don't want to look further in this layer tree
+    if ('children' in node && (deepSwap || !parentSwapped)) {
         for (const child of node.children) {
-            traverse(child, propertyName, fromVariant, toVariant);
+            traverse(child, propertyName, fromVariant, toVariant, deepSwap);
         }
     }
 }
@@ -76,16 +90,17 @@ figma.ui.onmessage = (msg) => {
     figma.clientStorage.setAsync(KEYS.PROPERTY_NAME, msg.propertyName);
     figma.clientStorage.setAsync(KEYS.FROM_VARIANT, msg.fromVariant);
     figma.clientStorage.setAsync(KEYS.TO_VARIANT, msg.toVariant);
+    figma.clientStorage.setAsync(KEYS.DEEP_SWAP, msg.deepSwap);
 
     // if user selected something, then we look at the selection
     if (figma.currentPage.selection.length) {
         for (const node of figma.currentPage.selection) {
-            traverse(node, msg.propertyName, msg.fromVariant, msg.toVariant);
+            traverse(node, msg.propertyName, msg.fromVariant, msg.toVariant, msg.deepSwap === 'true');
         }
     }
     // the user didn't select anything, then let's change the entire page
     else {
-        traverse(figma.currentPage, msg.propertyName, msg.fromVariant, msg.toVariant);
+        traverse(figma.currentPage, msg.propertyName, msg.fromVariant, msg.toVariant, msg.deepSwap === 'true');
     }
 
     // snackbar feedback
