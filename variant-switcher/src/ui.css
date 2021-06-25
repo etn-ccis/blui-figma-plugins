@@ -30,7 +30,8 @@ input {
 input:hover {
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
 }
-button:focus {
+button:focus,
+#exchange-icon:active {
     box-shadow: inset 0 0 0 2px #18a0fb;
 }
 button.primary:focus {
@@ -55,17 +56,73 @@ input:focus {
 .input-row input {
     flex: 1;
 }
-.checkbox-row {
-    align-items: flex-start;
-}
 .checkbox-row label {
     margin-left: 0.75em;
+    margin-right: 0.5em;
     text-align: left;
-}
-.checkbox-row .hint-text {
-    color: #000a;
-    margin-top: 2px;
 }
 .button-row {
     justify-content: flex-end;
+}
+
+#exchange-icon-container {
+    position: absolute;
+    top: 87px;
+    left: 73px;
+}
+
+#exchange-icon {
+    opacity: 0.3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    padding: 0;
+    box-shadow: none;
+    width: 30px;
+    height: 30px;
+}
+
+#exchange-icon:hover,
+#exchange-icon:focus {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* W3School: https://www.w3schools.com/css/css_tooltip.asp */
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 5px 8px;
+    position: absolute;
+    z-index: 1;
+    top: 150%;
+    left: 50%;
+    margin-left: -68px;
+    line-height: 130%;
+}
+
+.tooltip .tooltiptext::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
 }

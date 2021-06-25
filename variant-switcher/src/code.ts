@@ -1,5 +1,5 @@
 import { KEYS } from './shared';
-figma.showUI(__html__, { visible: false, height: 265 });
+figma.showUI(__html__, { visible: false, height: 240 });
 
 const delimiter = ', ';
 

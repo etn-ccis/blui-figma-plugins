@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { KEYS } from './shared';
+import { Exchange, Help } from './icons/index';
 import './ui.css';
 
 declare function require(path: string): any;
@@ -9,13 +10,6 @@ const LOCAL_STORAGE_DATA = {};
 onmessage = (event) => {
     LOCAL_STORAGE_DATA[event.data.pluginMessage.param] = event.data.pluginMessage.val;
 };
-
-// idk... react 17 does not like my <img src={require('./exchange.svg')} /> syntax?
-const ExchangeIcon: React.FC = () => (
-    <svg width="17" height="11" viewBox="0 0 17 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 4.08397H14M3 7.08397H14M3.27734 7.16794L7.27734 10.1679M13.7227 4L9.72266 1" stroke="black" />
-    </svg>
-);
 
 const App: React.FC = () => {
     const [propertyName, setPropertyName] = React.useState('Theme');
@@ -116,24 +110,31 @@ const App: React.FC = () => {
                     value={deepSwap}
                     checked={deepSwap === 'true'}
                 />
-                <label htmlFor={'swapChild'}>
-                    Deep swap
-                    <div className={'hint-text'}>Swap child layers after parent instances are swapped</div>
+                <label htmlFor={'swapChild'} title={'Look into child layers after parent instances are switched'}>
+                    Deep Switch
                 </label>
+                <span className={'tooltip'}>
+                    {<Help />}
+                    <span className="tooltiptext">Look into child layers after parent instances are switched</span>
+                </span>
             </div>
 
-            <div className={'button-row'}>
+            <div id={'exchange-icon-container'}>
                 <button
+                    id={'exchange-icon'}
                     onClick={() => {
                         const temp = fromVariant;
                         setFromVariant(toVariant);
                         setToVariant(temp);
                     }}
                 >
-                    From {<ExchangeIcon />} To
+                    {<Exchange />}
                 </button>
+            </div>
+
+            <div className={'button-row'}>
                 <button className={'primary'} onClick={submit} disabled={propertyName === '' || toVariant === ''}>
-                    Change Variant
+                    Switch Variant
                 </button>
             </div>
         </div>
