@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { KEYS } from './shared';
-import { Exchange, Help } from './icons/index';
+import { Exchange } from './icons/index';
 import './ui.css';
 
 declare function require(path: string): any;
@@ -15,7 +15,7 @@ const App: React.FC = () => {
     const [propertyName, setPropertyName] = React.useState('Theme');
     const [fromVariant, setFromVariant] = React.useState('Light');
     const [toVariant, setToVariant] = React.useState('Dark');
-    const [deepSwap, setDeepSwap] = React.useState<'true' | 'false'>('false');
+    const [deepSwitch, setDeepSwitch] = React.useState<'true' | 'false'>('true');
 
     // load stored parameters from history
     // use a timer to help picking up the async update from onmessage
@@ -39,8 +39,8 @@ const App: React.FC = () => {
             }
         }, 50);
         const timerDeepSwap = setInterval(() => {
-            if (LOCAL_STORAGE_DATA[KEYS.DEEP_SWAP]) {
-                setDeepSwap(LOCAL_STORAGE_DATA[KEYS.DEEP_SWAP]);
+            if (LOCAL_STORAGE_DATA[KEYS.DEEP_SWITCH]) {
+                setDeepSwitch(LOCAL_STORAGE_DATA[KEYS.DEEP_SWITCH]);
                 clearInterval(timerDeepSwap);
             }
         }, 50);
@@ -55,9 +55,9 @@ const App: React.FC = () => {
     // submit iff input fields are valid
     const submit = React.useCallback(() => {
         if (propertyName !== '' && toVariant !== '') {
-            parent.postMessage({ pluginMessage: { propertyName, fromVariant, toVariant, deepSwap } }, '*');
+            parent.postMessage({ pluginMessage: { propertyName, fromVariant, toVariant, deepSwitch } }, '*');
         }
-    }, [propertyName, fromVariant, toVariant, deepSwap]);
+    }, [propertyName, fromVariant, toVariant, deepSwitch]);
 
     return (
         <div>
@@ -104,19 +104,28 @@ const App: React.FC = () => {
                 <input
                     type={'checkbox'}
                     onChange={(e) => {
-                        setDeepSwap(e.target.value === 'true' ? 'false' : 'true');
+                        setDeepSwitch(e.target.value === 'true' ? 'false' : 'true');
                     }}
                     name={'swapChild'}
-                    value={deepSwap}
-                    checked={deepSwap === 'true'}
+                    value={deepSwitch}
+                    checked={deepSwitch === 'true'}
                 />
-                <label htmlFor={'swapChild'} title={'Look into child layers after parent instances are switched'}>
-                    Deep Switch
-                </label>
-                <span className={'tooltip'}>
-                    {<Help />}
-                    <span className="tooltiptext">Look into child layers after parent instances are switched</span>
-                </span>
+                <div
+                    onClick={(e) => {
+                        setDeepSwitch(deepSwitch === 'true' ? 'false' : 'true');
+                    }}
+                >
+                    <label htmlFor={'swapChild'} title={'Look into child layers after parent instances are switched'}>
+                        Deep Switch
+                    </label>
+                    <div className={'hint-text'}>
+                        {deepSwitch === 'true' ? (
+                            <span>Switch all instances in the selected tree</span>
+                        ) : (
+                            <span>Do not switch children after switching parent instance</span>
+                        )}
+                    </div>
+                </div>
             </div>
 
             <div id={'exchange-icon-container'}>
