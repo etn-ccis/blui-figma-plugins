@@ -1,22 +1,25 @@
 # Variant Switcher
 
-![Banner](../_assets_/variant-switcher/cover-art.svg)
+![Banner](./_assets_/cover-art.svg)
 
 The Variant Switcher plugin takes all of your selected component instances and recursively changes them to a different variant based on the specified property.
 
+[Install it for your Figma workspace](https://www.figma.com/community/plugin/971482182464094790/Variant-Switcher)
+
 ## Usage
 
-The Variant Switcher plugin has three input fields:
+The Variant Switcher plugin has four input fields:
 
-| Input Field   | Description                                                                                                                           | Required? |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| Property Name | the property you want to change                                                                                                       | yes       |
-| From Variant  | the current value you want to target (leave blank to select all instances with the selected property regardless of the current value) | no        |
-| To Variant    | the new value you want to set the property to                                                                                         | yes       |
+| Input Field   | Description                                                                                                                                      | Required? |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
+| Property Name | the property you want to change                                                                                                                  | yes       |
+| From Variant  | the current value you want to target (leave blank to select all instances with the selected property regardless of the current value)            | no        |
+| To Variant    | the new value you want to set the property to                                                                                                    | yes       |
+| Deep Switch   | When unchecked, the plugin will not switch children after switching parent instance. ([Diagram explanation](./_assets_/deep-switch-diagram.png)) | yes       |
 
 ## Example
 
-![Example](../_assets_/variant-switcher/example.png)
+![Example](./_assets_/example.png)
 
 Consider the example above. In this case, all of the components have a `Theme` property (all of them have a "Light" and "Dark" variant and the Star has an additional "Blue" variant). When using the plugin, we set the `Property Name` field to "Theme", `From Variant` to "Light", and `To Variant` to "Dark". The plugin traverses through all selected nodes finding any instances whose `Theme` properties are set to "Light", and changes them to "Dark".
 
@@ -40,9 +43,9 @@ Finally, build the plugin:
 
 ```sh
 cd path/to/figma-plugins/variant-switcher
-yarn && npx webpack
+yarn && yarn build
 ```
 
 The plugin should now be running happily.
 
-> To build in production mode, run `npx webpack --mode production`. See results in `/dist` folder.
+> To build in production mode, run `yarn && yarn build:production`. See results in `/dist` folder.

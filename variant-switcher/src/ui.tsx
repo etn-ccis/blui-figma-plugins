@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { KEYS } from './shared';
+import { Exchange } from './icons/index';
 import './ui.css';
 
 declare function require(path: string): any;
@@ -10,17 +11,11 @@ onmessage = (event) => {
     LOCAL_STORAGE_DATA[event.data.pluginMessage.param] = event.data.pluginMessage.val;
 };
 
-// idk... react 17 does not like my <img src={require('./exchange.svg')} /> syntax?
-const ExchangeIcon: React.FC = () => (
-    <svg width="17" height="11" viewBox="0 0 17 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 4.08397H14M3 7.08397H14M3.27734 7.16794L7.27734 10.1679M13.7227 4L9.72266 1" stroke="black" />
-    </svg>
-);
-
 const App: React.FC = () => {
     const [propertyName, setPropertyName] = React.useState('Theme');
     const [fromVariant, setFromVariant] = React.useState('Light');
     const [toVariant, setToVariant] = React.useState('Dark');
+    const [deepSwitch, setDeepSwitch] = React.useState<'true' | 'false'>('true');
 
     // load stored parameters from history
     // use a timer to help picking up the async update from onmessage
@@ -43,12 +38,26 @@ const App: React.FC = () => {
                 clearInterval(timerToVariant);
             }
         }, 50);
+        const timerDeepSwap = setInterval(() => {
+            if (LOCAL_STORAGE_DATA[KEYS.DEEP_SWITCH]) {
+                setDeepSwitch(LOCAL_STORAGE_DATA[KEYS.DEEP_SWITCH]);
+                clearInterval(timerDeepSwap);
+            }
+        }, 50);
         return () => {
             clearInterval(timerPropertyName);
             clearInterval(timerFromVariant);
             clearInterval(timerToVariant);
+            clearInterval(timerDeepSwap);
         };
     }, []);
+
+    // submit iff input fields are valid
+    const submit = React.useCallback(() => {
+        if (propertyName !== '' && toVariant !== '') {
+            parent.postMessage({ pluginMessage: { propertyName, fromVariant, toVariant, deepSwitch } }, '*');
+        }
+    }, [propertyName, fromVariant, toVariant, deepSwitch]);
 
     return (
         <div>
@@ -58,6 +67,11 @@ const App: React.FC = () => {
                     onChange={(e) => setPropertyName(e.target.value)}
                     name={'Name of the property shared by instances'}
                     value={propertyName}
+                    onKeyDown={(e) => {
+                        if (e.code === 'Enter') {
+                            submit();
+                        }
+                    }}
                 />
             </div>
             <div className={'input-row'}>
@@ -66,6 +80,11 @@ const App: React.FC = () => {
                     onChange={(e) => setFromVariant(e.target.value)}
                     name={'The variant name to change from'}
                     value={fromVariant}
+                    onKeyDown={(e) => {
+                        if (e.code === 'Enter') {
+                            submit();
+                        }
+                    }}
                 />
             </div>
             <div className={'input-row'}>
@@ -74,27 +93,57 @@ const App: React.FC = () => {
                     onChange={(e) => setToVariant(e.target.value)}
                     name={'The variant name to change into'}
                     value={toVariant}
+                    onKeyDown={(e) => {
+                        if (e.code === 'Enter') {
+                            submit();
+                        }
+                    }}
                 />
             </div>
+            <div className={'checkbox-row'}>
+                <input
+                    type={'checkbox'}
+                    onChange={(e) => {
+                        setDeepSwitch(e.target.value === 'true' ? 'false' : 'true');
+                    }}
+                    name={'swapChild'}
+                    value={deepSwitch}
+                    checked={deepSwitch === 'true'}
+                />
+                <div
+                    onClick={(e) => {
+                        setDeepSwitch(deepSwitch === 'true' ? 'false' : 'true');
+                    }}
+                >
+                    <label htmlFor={'swapChild'} title={'Look into child layers after parent instances are switched'}>
+                        Deep Switch
+                    </label>
+                    <div className={'hint-text'}>
+                        {deepSwitch === 'true' ? (
+                            <span>Switch all instances in the selected tree</span>
+                        ) : (
+                            <span>Do not switch children after switching parent instance</span>
+                        )}
+                    </div>
+                </div>
+            </div>
 
-            <div className={'button-row'}>
+            <div id={'exchange-icon-container'}>
                 <button
+                    id={'exchange-icon'}
                     onClick={() => {
                         const temp = fromVariant;
                         setFromVariant(toVariant);
                         setToVariant(temp);
                     }}
                 >
-                    From {<ExchangeIcon />} To
+                    {<Exchange />}
                 </button>
-                <button
-                    className={'primary'}
-                    onClick={() => {
-                        parent.postMessage({ pluginMessage: { propertyName, fromVariant, toVariant } }, '*');
-                    }}
-                    disabled={propertyName === '' || toVariant === ''}
-                >
-                    Change Variant
+            </div>
+
+            <div className={'button-row'}>
+                <button className={'primary'} onClick={submit} disabled={propertyName === '' || toVariant === ''}>
+                    Switch Variant
                 </button>
             </div>
         </div>
