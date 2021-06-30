@@ -15,7 +15,7 @@ const App: React.FC = () => {
     const [propertyName, setPropertyName] = React.useState('Theme');
     const [fromVariant, setFromVariant] = React.useState('Light');
     const [toVariant, setToVariant] = React.useState('Dark');
-    const [deepSwitch, setDeepSwitch] = React.useState<'true' | 'false'>('true');
+    const [deepSwitch, setDeepSwitch] = React.useState<'true' | 'false'>('false');
 
     // load stored parameters from history
     // use a timer to help picking up the async update from onmessage
@@ -38,17 +38,17 @@ const App: React.FC = () => {
                 clearInterval(timerToVariant);
             }
         }, 50);
-        const timerDeepSwap = setInterval(() => {
+        const timerDeepSwitch = setInterval(() => {
             if (LOCAL_STORAGE_DATA[KEYS.DEEP_SWITCH]) {
                 setDeepSwitch(LOCAL_STORAGE_DATA[KEYS.DEEP_SWITCH]);
-                clearInterval(timerDeepSwap);
+                clearInterval(timerDeepSwitch);
             }
         }, 50);
         return () => {
             clearInterval(timerPropertyName);
             clearInterval(timerFromVariant);
             clearInterval(timerToVariant);
-            clearInterval(timerDeepSwap);
+            clearInterval(timerDeepSwitch);
         };
     }, []);
 
@@ -120,9 +120,9 @@ const App: React.FC = () => {
                     </label>
                     <div className={'hint-text'}>
                         {deepSwitch === 'true' ? (
-                            <span>Switch all instances in the selected tree</span>
+                            <span>Plugin will switch all instances in the selected tree</span>
                         ) : (
-                            <span>Do not switch children after switching parent instance</span>
+                            <span>Plugin will not switch children after switching parent instance</span>
                         )}
                     </div>
                 </div>
