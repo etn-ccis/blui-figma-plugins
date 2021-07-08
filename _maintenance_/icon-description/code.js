@@ -3,8 +3,8 @@
  * Updating both at the same time would result in name conflict.
  */
 const UPDATE_MATERIAL = true;
-const MATERIAL_META = 'https://fonts.google.com/metadata/icons';
 const PXBLUE_META = 'https://raw.githubusercontent.com/pxblue/icons/master/svg/index.json';
+const matJSON = require('./matMeta.json');
 // count the icon description status
 let updateCount = 0;
 const iconsWithoutTags = [];
@@ -20,7 +20,11 @@ else if (figma.currentPage.selection[0].type !== 'COMPONENT') {
 else {
     // create a fake UI and send the network request
     figma.showUI(__html__, { visible: false });
-    figma.ui.postMessage({ url: UPDATE_MATERIAL ? MATERIAL_META : PXBLUE_META, updateMaterial: UPDATE_MATERIAL });
+    if (UPDATE_MATERIAL) {
+        const iconSet = JSON.parse(matJSON);
+        updateIcons(iconSet);
+    }
+    figma.ui.postMessage({ url: PXBLUE_META, updateMaterial: UPDATE_MATERIAL });
 }
 function addDescriptionToIconNode(node, icons) {
     if (node && node.type === 'COMPONENT') {
@@ -44,11 +48,11 @@ function addDescriptionToIconNode(node, icons) {
         }
     }
 }
-figma.ui.onmessage = (msg) => {
-    console.log(msg);
+function updateIcons(iconSet) {
+    console.log(iconSet);
     if (figma.currentPage.selection.length) {
         for (const node of figma.currentPage.selection) {
-            addDescriptionToIconNode(node, msg);
+            addDescriptionToIconNode(node, iconSet);
         }
     }
     // snackbar feedback
@@ -70,4 +74,7 @@ figma.ui.onmessage = (msg) => {
         console.log(iconsNotInMeta);
     }
     figma.closePlugin();
+}
+figma.ui.onmessage = (msg) => {
+    updateIcons(msg);
 };

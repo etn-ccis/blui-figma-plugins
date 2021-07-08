@@ -4,14 +4,13 @@
  */
 const UPDATE_MATERIAL = true;
 
-const MATERIAL_META = 'https://fonts.google.com/metadata/icons';
 const PXBLUE_META = 'https://raw.githubusercontent.com/pxblue/icons/master/svg/index.json';
 
-type Icon = {
-    name: string;
-    filename?: string;
-    tags: string[];
-};
+declare function require(path: string): any;
+
+const matJSON = require('./matMeta.json');
+// import matJSON2 from './matMeta.json';
+
 type IconSet = { [name: string]: string[] };
 
 // count the icon description status
@@ -28,7 +27,11 @@ if (!figma.currentPage.selection.length) {
 } else {
     // create a fake UI and send the network request
     figma.showUI(__html__, { visible: false });
-    figma.ui.postMessage({ url: UPDATE_MATERIAL ? MATERIAL_META : PXBLUE_META, updateMaterial: UPDATE_MATERIAL });
+    if (UPDATE_MATERIAL) {
+        const iconSet = JSON.parse(matJSON);
+        updateIcons(iconSet);
+    }
+    figma.ui.postMessage({ url: PXBLUE_META, updateMaterial: UPDATE_MATERIAL });
 }
 
 function addDescriptionToIconNode(node, icons: IconSet): void {
@@ -55,11 +58,11 @@ function addDescriptionToIconNode(node, icons: IconSet): void {
     }
 }
 
-figma.ui.onmessage = (msg: IconSet) => {
-    console.log(msg);
+function updateIcons(iconSet: IconSet) {
+    console.log(iconSet);
     if (figma.currentPage.selection.length) {
         for (const node of figma.currentPage.selection) {
-            addDescriptionToIconNode(node, msg);
+            addDescriptionToIconNode(node, iconSet);
         }
     }
 
@@ -80,6 +83,9 @@ figma.ui.onmessage = (msg: IconSet) => {
         console.log('These icons exist in your selection, but are not in the meta files:');
         console.log(iconsNotInMeta);
     }
-
     figma.closePlugin();
+}
+
+figma.ui.onmessage = (msg: IconSet) => {
+    updateIcons(msg);
 };
