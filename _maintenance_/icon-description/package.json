@@ -1,0 +1,15 @@
+{
+    "name": "icon-description",
+    "version": "0.0.0",
+    "private": true,
+    "main": "code.js",
+    "scripts": {
+        "build": "tsc -p tsconfig.json"
+    },
+    "author": "",
+    "license": "",
+    "dependencies": {
+        "@types/figma": "^1.0.3",
+        "typescript": "^4.3.5"
+    }
+}

@@ -1,0 +1,26 @@
+<script>
+    window.onmessage = async (event) => {
+        // network request requires browser API and only works in a fake UI
+        // read more at https://www.figma.com/plugin-docs/making-network-requests/
+        const iconSet = {};
+
+        const response = await fetch(event.data.pluginMessage.url);
+        console.log(response.statusText);
+
+        if (event.data.pluginMessage.updateMaterial) {
+            const text = await response.text();
+            console.log(text);
+            const data = JSON.parse(text.replace(")]}'", '')).icons;
+            data.forEach((icon) => {
+                iconSet[icon.name] = icon.tags;
+            });
+        } else {
+            const data = (await response.json()).icons;
+            data.forEach((icon) => {
+                iconSet[icon.filename.slice(0, -4)] = icon.tags;
+            });
+        }
+
+        parent.postMessage({ pluginMessage: iconSet }, '*');
+    };
+</script>
