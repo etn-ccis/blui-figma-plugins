@@ -5,7 +5,6 @@
         const iconSet = {};
 
         const response = await fetch(event.data.pluginMessage.url);
-        console.log(response.statusText);
         const data = (await response.json()).icons;
 
         if (event.data.pluginMessage.updateMaterial) {

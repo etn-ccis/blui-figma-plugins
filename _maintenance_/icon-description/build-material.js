@@ -7,10 +7,10 @@ async function main() {
         .then((text) => {
             const data = text.replace(")]}'\n", '');
             const iconSet = {};
-            const icons = JSON.parse(data).icons.forEach((icon) => {
+            JSON.parse(data).icons.forEach((icon) => {
                 iconSet[icon.name] = icon.tags;
             });
-            fs.writeFileSync('./matMeta.json', JSON.stringify(iconSet));
+            fs.writeFileSync('./matMeta.ts', 'export const data = ' + JSON.stringify(iconSet));
         });
 }
 

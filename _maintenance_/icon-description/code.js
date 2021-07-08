@@ -4,7 +4,10 @@
  */
 const UPDATE_MATERIAL = true;
 const PXBLUE_META = 'https://raw.githubusercontent.com/pxblue/icons/master/svg/index.json';
-const matJSON = require('./matMeta.json');
+// const matJSON = require('./matMeta');
+
+const data = require('./matMeta.js');
+console.log('data!', data);
 // count the icon description status
 let updateCount = 0;
 const iconsWithoutTags = [];
@@ -12,17 +15,16 @@ const iconsNotInMeta = [];
 if (!figma.currentPage.selection.length) {
     figma.notify(`Select the icons before you run the plugin.`);
     figma.closePlugin();
-}
-else if (figma.currentPage.selection[0].type !== 'COMPONENT') {
+} else if (figma.currentPage.selection[0].type !== 'COMPONENT') {
     figma.notify(`Do not select anything else other than the icons.`);
     figma.closePlugin();
-}
-else {
+} else {
     // create a fake UI and send the network request
     figma.showUI(__html__, { visible: false });
     if (UPDATE_MATERIAL) {
-        const iconSet = JSON.parse(matJSON);
-        updateIcons(iconSet);
+        console.log(data);
+        const iconSet = data;
+        // updateIcons(iconSet);
     }
     figma.ui.postMessage({ url: PXBLUE_META, updateMaterial: UPDATE_MATERIAL });
 }
@@ -41,8 +43,7 @@ function addDescriptionToIconNode(node, icons) {
             }
             // remove it from the set to speed up the search, and also to avoid fights between dup names in pxb and mat icons
             icons[node.name] = undefined;
-        }
-        else {
+        } else {
             // user selected something whose name cannot be recognized by the plugin
             iconsNotInMeta.push(node.name);
         }
@@ -58,11 +59,9 @@ function updateIcons(iconSet) {
     // snackbar feedback
     if (updateCount === 0) {
         figma.notify(`😕 I couldn't find any icons to update.`);
-    }
-    else if (updateCount === 1) {
+    } else if (updateCount === 1) {
         figma.notify(`Changed 1 icon's description.`);
-    }
-    else {
+    } else {
         figma.notify(`Changed ${updateCount} icons' description.`);
     }
     if (iconsWithoutTags.length !== 0) {

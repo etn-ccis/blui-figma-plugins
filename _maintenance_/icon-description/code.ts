@@ -6,10 +6,10 @@ const UPDATE_MATERIAL = true;
 
 const PXBLUE_META = 'https://raw.githubusercontent.com/pxblue/icons/master/svg/index.json';
 
-declare function require(path: string): any;
+// const matJSON = require('./matMeta');
 
-const matJSON = require('./matMeta.json');
-// import matJSON2 from './matMeta.json';
+import { data } from './matMeta.js';
+console.log('data!', data);
 
 type IconSet = { [name: string]: string[] };
 
@@ -28,8 +28,9 @@ if (!figma.currentPage.selection.length) {
     // create a fake UI and send the network request
     figma.showUI(__html__, { visible: false });
     if (UPDATE_MATERIAL) {
-        const iconSet = JSON.parse(matJSON);
-        updateIcons(iconSet);
+        console.log(data);
+        const iconSet = data;
+        // updateIcons(iconSet);
     }
     figma.ui.postMessage({ url: PXBLUE_META, updateMaterial: UPDATE_MATERIAL });
 }
