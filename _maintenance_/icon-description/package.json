@@ -2,12 +2,12 @@
     "name": "icon-description",
     "version": "0.0.0",
     "private": true,
-    "main": "code.js",
+    "main": "build/code.js",
     "scripts": {
-        "build": "node build-material.js && tsc -p tsconfig.json"
+        "build": "node ./utils/build-material.js && tsc -p tsconfig.json && node ./utils/concat-files.js"
     },
-    "author": "",
-    "license": "",
+    "author": "PX Blue",
+    "license": "BSD-3-Clause",
     "dependencies": {
         "@types/figma": "^1.0.3",
         "node-fetch": "^2.6.1",

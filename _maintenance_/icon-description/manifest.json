@@ -2,6 +2,6 @@
     "name": "Icon Description",
     "id": "994359716504097058",
     "api": "1.0.0",
-    "main": "code.js",
+    "main": "build/code.js",
     "ui": "ui.html"
 }

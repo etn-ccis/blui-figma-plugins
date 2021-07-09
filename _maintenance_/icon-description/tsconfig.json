@@ -2,6 +2,6 @@
     "compilerOptions": {
         "target": "es2016",
         "typeRoots": ["./node_modules/@types", "./node_modules/@figma"],
-        "watch": true
+        "outDir": "build"
     }
 }
