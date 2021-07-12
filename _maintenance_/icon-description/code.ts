@@ -2,7 +2,7 @@
  * Choose to update material icons or pxb icons.
  * Updating both at the same time would result in name conflict.
  */
-const UPDATE_MATERIAL = true;
+const UPDATE_MATERIAL = false;
 
 const PXBLUE_META = 'https://raw.githubusercontent.com/pxblue/icons/master/svg/index.json';
 
@@ -28,7 +28,7 @@ if (!figma.currentPage.selection.length) {
         const iconSet = matIconSet;
         updateIcons(iconSet);
     }
-    figma.ui.postMessage({ url: PXBLUE_META, updateMaterial: UPDATE_MATERIAL });
+    figma.ui.postMessage({ url: PXBLUE_META });
 }
 
 function addDescriptionToIconNode(node, icons: IconSet): void {

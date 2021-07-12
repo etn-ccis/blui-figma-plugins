@@ -7,15 +7,17 @@
         const response = await fetch(event.data.pluginMessage.url);
         const data = (await response.json()).icons;
 
-        if (event.data.pluginMessage.updateMaterial) {
-            data.forEach((icon) => {
-                iconSet[icon.name] = icon.tags;
+        data.forEach((icon) => {
+            const iconName = icon.filename.slice(0, -4);
+            iconSet[iconName] = icon.tags;
+
+            icon.family.forEach((family) => {
+                const familyName = family.toLowerCase();
+                if (icon.tags.indexOf(familyName) === -1) {
+                    iconSet[iconName].push(familyName);
+                }
             });
-        } else {
-            data.forEach((icon) => {
-                iconSet[icon.filename.slice(0, -4)] = icon.tags;
-            });
-        }
+        });
 
         parent.postMessage({ pluginMessage: iconSet }, '*');
     };
