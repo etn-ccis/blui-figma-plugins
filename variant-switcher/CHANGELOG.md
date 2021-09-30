@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.1 (Sept 29, 2021)
+
+-   Added `editorType` to `manifest.json`
+
 ## v2.0.0 (June 30, 2021)
 
 ### Added
