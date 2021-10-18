@@ -1,7 +1,7 @@
 const fs = require('fs');
 const fetch = require('node-fetch');
 
-// everything works fine on the PXB side, which uses GitHub's API.
+// everything works fine on the BLUI side, which uses GitHub's API.
 // But Material Design's meta json file has CORS restrictions on it, therefore we have to
 // download it on build.
 async function main() {

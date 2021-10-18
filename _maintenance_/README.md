@@ -1,4 +1,4 @@
-This folder contains scripts helpful to manage PX Blue resources. They are not published as Figma plugins, but rather meant to be run in the local dev environment.
+This folder contains scripts helpful to manage Brightlayer UI resources. They are not published as Figma plugins, but rather meant to be run in the local dev environment.
 
 -   icon-description:
 

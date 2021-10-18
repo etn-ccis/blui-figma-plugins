@@ -30,7 +30,7 @@ Consider the example above. In this case, all of the components have a `Theme` p
 To run the plugin locally, first clone the repository:
 
 ```sh
-git clone https://github.com/pxblue/figma-plugins
+git clone https://github.com/brightlayer-ui/figma-plugins
 ```
 
 Then, link the plugin to Figma:

@@ -1,10 +1,10 @@
 /**
- * Choose to update material icons or pxb icons.
+ * Choose to update material icons or brightlayer-ui icons.
  * Updating both at the same time would result in name conflict.
  */
 const UPDATE_MATERIAL = false;
 
-const PXBLUE_META = 'https://raw.githubusercontent.com/pxblue/icons/master/svg/index.json';
+const BRIGHTLAYER_UI_META = 'https://raw.githubusercontent.com/brightlayer-ui/icons/master/svg/index.json';
 
 type IconSet = { [name: string]: string[] };
 
@@ -28,7 +28,7 @@ if (!figma.currentPage.selection.length) {
         const iconSet = matIconSet;
         updateIcons(iconSet);
     }
-    figma.ui.postMessage({ url: PXBLUE_META });
+    figma.ui.postMessage({ url: BRIGHTLAYER_UI_META });
 }
 
 function addDescriptionToIconNode(node, icons: IconSet): void {
@@ -48,7 +48,7 @@ function addDescriptionToIconNode(node, icons: IconSet): void {
                     node.description = newDescription;
                     updateCount++;
                 }
-                // remove it from the set to speed up the search, and also to avoid fights between dup names in pxb and mat icons
+                // remove it from the set to speed up the search, and also to avoid fights between dup names in brightlayer-ui and mat icons
                 icons[node.name] = undefined;
             }
         } else {
