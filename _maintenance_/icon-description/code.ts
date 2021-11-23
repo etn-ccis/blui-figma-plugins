@@ -2,7 +2,7 @@
  * Choose to update material icons or brightlayer-ui icons.
  * Updating both at the same time would result in name conflict.
  */
-const UPDATE_MATERIAL = false;
+const UPDATE_MATERIAL = true;
 
 const BRIGHTLAYER_UI_META = 'https://raw.githubusercontent.com/brightlayer-ui/icons/master/svg/index.json';
 
@@ -27,8 +27,9 @@ if (!figma.currentPage.selection.length) {
         // @ts-ignore
         const iconSet = matIconSet;
         updateIcons(iconSet);
+    } else {
+        figma.ui.postMessage({ url: BRIGHTLAYER_UI_META });
     }
-    figma.ui.postMessage({ url: BRIGHTLAYER_UI_META });
 }
 
 function addDescriptionToIconNode(node, icons: IconSet): void {
@@ -75,11 +76,15 @@ function updateIcons(iconSet: IconSet) {
     }
 
     if (iconsWithoutTags.length !== 0) {
-        console.log("These icons showed up in meta files, but their 'tags' field are empty:");
+        console.log(
+            "These icons showed up in meta files, but their 'tags' field are empty, and therefore the plugin didn't touch anything to them:"
+        );
         console.log(iconsWithoutTags);
     }
     if (iconsNotInMeta.length !== 0) {
-        console.log('These icons exist in your selection, but are not in the meta files:');
+        console.log(
+            `[!!] These icons exist in your selection, but are not in the meta files, and therefore the plugin didn't touch anything to them:`
+        );
         console.log(iconsNotInMeta);
     }
     figma.closePlugin();
