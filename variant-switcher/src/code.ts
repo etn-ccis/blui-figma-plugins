@@ -1,7 +1,7 @@
 import { KEYS } from './shared';
 figma.showUI(__html__, { visible: false, height: 265 });
 
-const delimiter = ', ';
+const delimiter = ',';
 
 figma.clientStorage.getAsync(KEYS.PROPERTY_NAME).then((val) => {
     if (val) figma.ui.postMessage({ param: KEYS.PROPERTY_NAME, val });
@@ -30,7 +30,7 @@ function traverse(node: any, propertyName: string, fromVariant: string, toVarian
     let parentSwapped = false;
 
     if (node && node.type == 'INSTANCE' && node.mainComponent.parent) {
-        let nodeProperties = node.mainComponent.name.split(delimiter);
+        let nodeProperties = node.mainComponent.name.split(delimiter).map((str: string) => str.trim());
 
         // the instance comes from a component with variances set in them
         // and there is the variant we are looking for
