@@ -17,10 +17,15 @@ onmessage = (event) => {
 };
 
 const App: React.FC = () => {
+    // basic options
     const [propertyName, setPropertyName] = React.useState('Theme');
     const [fromVariant, setFromVariant] = React.useState('Light');
     const [toVariant, setToVariant] = React.useState('Dark');
+
+    // advanced options
     const [deepSwitch, setDeepSwitch] = React.useState<'true' | 'false'>('false');
+    const [fullDocument, setFullDocument] = React.useState<'true' | 'false'>('false');
+    const [mainComponentName, setMainComponentName] = React.useState('');
 
     // load stored parameters from history
     // use a timer to help picking up the async update from onmessage
@@ -49,20 +54,46 @@ const App: React.FC = () => {
                 clearInterval(timerDeepSwitch);
             }
         }, 50);
+        const timerFullDocument = setInterval(() => {
+            if (LOCAL_STORAGE_DATA[KEYS.FULL_DOCUMENT]) {
+                setFullDocument(LOCAL_STORAGE_DATA[KEYS.FULL_DOCUMENT]);
+                clearInterval(timerFullDocument);
+            }
+        }, 50);
+        const timerMainComponentName = setInterval(() => {
+            if (LOCAL_STORAGE_DATA[KEYS.MAIN_COMPONENT_NAME]) {
+                setMainComponentName(LOCAL_STORAGE_DATA[KEYS.MAIN_COMPONENT_NAME]);
+                clearInterval(timerMainComponentName);
+            }
+        }, 50);
         return () => {
             clearInterval(timerPropertyName);
             clearInterval(timerFromVariant);
             clearInterval(timerToVariant);
             clearInterval(timerDeepSwitch);
+            clearInterval(timerFullDocument);
+            clearInterval(timerMainComponentName);
         };
     }, []);
 
     // submit iff input fields are valid
     const submit = React.useCallback(() => {
         if (propertyName !== '' && toVariant !== '') {
-            parent.postMessage({ pluginMessage: { propertyName, fromVariant, toVariant, deepSwitch } }, '*');
+            parent.postMessage(
+                {
+                    pluginMessage: {
+                        propertyName,
+                        fromVariant,
+                        toVariant,
+                        deepSwitch,
+                        fullDocument,
+                        mainComponentName,
+                    },
+                },
+                '*'
+            );
         }
-    }, [propertyName, fromVariant, toVariant, deepSwitch]);
+    }, [propertyName, fromVariant, toVariant, deepSwitch, fullDocument, mainComponentName]);
 
     return (
         <div>
@@ -132,6 +163,46 @@ const App: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <div className={'checkbox-row'}>
+                <input
+                    type={'checkbox'}
+                    onChange={(e) => {
+                        setFullDocument(e.target.value === 'true' ? 'false' : 'true');
+                    }}
+                    name={'fullDocumentSwitch'}
+                    value={fullDocument}
+                    checked={fullDocument === 'true'}
+                />
+                <div
+                    onClick={(e) => {
+                        setFullDocument(fullDocument === 'true' ? 'false' : 'true');
+                    }}
+                >
+                    <label htmlFor={'fullDocumentSwitch'} title={'Look into the entire document'}>
+                        Switch Full Document
+                    </label>
+                    <div className={'hint-text'}>
+                        {fullDocument === 'true' ? (
+                            <span>Plugin will scan through all pages in the current document</span>
+                        ) : (
+                            <span>Plugin will only scan the current selection</span>
+                        )}
+                    </div>
+                </div>
+            </div>
+            <div className={'input-row'}>
+                <label title={'Only check instance with this main component name'}>Main Component Name</label>
+                <input
+                    onChange={(e) => setMainComponentName(e.target.value)}
+                    name={'Main component name'}
+                    value={mainComponentName}
+                    onKeyDown={(e) => {
+                        if (e.code === 'Enter') {
+                            submit();
+                        }
+                    }}
+                />
+            </div>
 
             <div id={'exchange-icon-container'}>
                 <button
@@ -147,7 +218,10 @@ const App: React.FC = () => {
             </div>
 
             <div className={'button-row'}>
-                <button className={'primary'} onClick={submit} disabled={propertyName === '' || toVariant === ''}>
+                <button className={'secondary'} onClick={submit} disabled={propertyName === '' || toVariant === ''}>
+                    Advanced ...
+                </button>
+                <button className={'primary'} onClick={submit}>
                     Switch Variant
                 </button>
             </div>
