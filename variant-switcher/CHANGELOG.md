@@ -9,7 +9,7 @@
 
 ### Changed
 
--   Grouped advanced options behind an "Advanced Options" button.
+-   Grouped advanced options behind an "Advanced Options" dropdown.
 -   Allowed white space / no white space around the delimiter `,` between different instance names. ([#16](https://github.com/brightlayer-ui/figma-plugins/issues/16))
 
 ## v2.0.1 (Sept 29, 2021)

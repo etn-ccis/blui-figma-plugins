@@ -10,12 +10,14 @@ The Variant Switcher plugin takes all of your selected component instances and r
 
 The Variant Switcher plugin has four input fields:
 
-| Input Field   | Description                                                                                                                                      | Required? |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
-| Property Name | the property you want to change                                                                                                                  | yes       |
-| From Variant  | the current value you want to target (leave blank to select all instances with the selected property regardless of the current value)            | no        |
-| To Variant    | the new value you want to set the property to                                                                                                    | yes       |
-| Deep Switch   | When unchecked, the plugin will not switch children after switching parent instance. ([Diagram explanation](./_assets_/deep-switch-diagram.png)) | yes       |
+| Input Field          | Description                                                                                                                                                                        | Required? |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| Property Name        | the property you want to change                                                                                                                                                    | yes       |
+| From Variant         | the current value you want to target (leave blank to select all instances with the selected property regardless of the current value)                                              | no        |
+| To Variant           | the new value you want to set the property to                                                                                                                                      | yes       |
+| Deep Switch          | When unchecked, the plugin will not switch children after switching parent instance. ([Diagram explanation](./_assets_/deep-switch-diagram.png))                                   | yes       |
+| Switch Full Document | When checked, the plugin will traverse through the entire document. When unchecked, the plugin will only switch the current selection, or the current page if nothing is selected. | yes       |
+| Main Component Name  | Change only instances with the specified main component name                                                                                                                       | no        |
 
 ## Example
 
