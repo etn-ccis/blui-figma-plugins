@@ -176,9 +176,15 @@ figma.ui.onmessage = (msg) => {
 
         // snackbar feedback
         if (switchCount === 0) {
-            figma.notify(
-                `😕 Variant Switcher couldn't find anything to switch to "${msg.propertyName}=${msg.toVariant}".`
-            );
+            if (msg.mainComponentName !== '') {
+                figma.notify(
+                    `😕 Variant Switcher couldn't find any "${msg.mainComponentName}" to switch to "${msg.propertyName}=${msg.toVariant}".`
+                );
+            } else {
+                figma.notify(
+                    `😕 Variant Switcher couldn't find anything to switch to "${msg.propertyName}=${msg.toVariant}".`
+                );
+            }
         } else if (switchCount === 1) {
             figma.notify(`Changed 1 instance's "${msg.propertyName}" to "${msg.toVariant}".`);
         } else {
