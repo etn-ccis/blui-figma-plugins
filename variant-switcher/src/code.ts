@@ -1,7 +1,17 @@
+/**
+ Copyright (c) 2021-present, Eaton
+ All rights reserved.
+ This code is licensed under the BSD-3 license found in the LICENSE file in the root directory of this source tree and at https://opensource.org/licenses/BSD-3-Clause.
+ **/
+
 import { KEYS } from './shared';
-figma.showUI(__html__, { visible: false, height: 372 });
 
 const DELIMITER = ',';
+const EXPANDED_HEIGHT = 402;
+const COLLAPSED_HEIGHT = 234;
+const DEFAULT_WIDTH = 300;
+
+figma.showUI(__html__, { visible: false, width: DEFAULT_WIDTH, height: COLLAPSED_HEIGHT });
 
 figma.clientStorage.getAsync(KEYS.PROPERTY_NAME).then((val) => {
     if (val) figma.ui.postMessage({ param: KEYS.PROPERTY_NAME, val });
@@ -20,6 +30,12 @@ figma.clientStorage.getAsync(KEYS.FULL_DOCUMENT).then((val) => {
 });
 figma.clientStorage.getAsync(KEYS.MAIN_COMPONENT_NAME).then((val) => {
     if (val) figma.ui.postMessage({ param: KEYS.MAIN_COMPONENT_NAME, val });
+});
+figma.clientStorage.getAsync(KEYS.SHOW_ADVANCED_OPTIONS).then((val) => {
+    if (val !== undefined) {
+        figma.ui.postMessage({ param: KEYS.SHOW_ADVANCED_OPTIONS, val });
+        if (val) figma.ui.resize(DEFAULT_WIDTH, EXPANDED_HEIGHT);
+    }
 });
 
 let switchCount = 0;
@@ -110,19 +126,46 @@ function traverse(
 }
 
 figma.ui.onmessage = (msg) => {
-    // remember these params and save to client storage
-    figma.clientStorage.setAsync(KEYS.PROPERTY_NAME, msg.propertyName);
-    figma.clientStorage.setAsync(KEYS.FROM_VARIANT, msg.fromVariant);
-    figma.clientStorage.setAsync(KEYS.TO_VARIANT, msg.toVariant);
-    figma.clientStorage.setAsync(KEYS.DEEP_SWITCH, msg.deepSwitch);
-    figma.clientStorage.setAsync(KEYS.FULL_DOCUMENT, msg.fullDocument);
-    figma.clientStorage.setAsync(KEYS.MAIN_COMPONENT_NAME, msg.mainComponentName);
+    if (msg.action === 'submit') {
+        // remember these params and save to client storage
+        figma.clientStorage.setAsync(KEYS.PROPERTY_NAME, msg.propertyName);
+        figma.clientStorage.setAsync(KEYS.FROM_VARIANT, msg.fromVariant);
+        figma.clientStorage.setAsync(KEYS.TO_VARIANT, msg.toVariant);
+        figma.clientStorage.setAsync(KEYS.DEEP_SWITCH, msg.deepSwitch);
+        figma.clientStorage.setAsync(KEYS.FULL_DOCUMENT, msg.fullDocument);
+        figma.clientStorage.setAsync(KEYS.MAIN_COMPONENT_NAME, msg.mainComponentName);
+        figma.clientStorage.setAsync(KEYS.SHOW_ADVANCED_OPTIONS, msg.showAdvancedOptions);
 
-    // the user want to switch the whole document
-    if (msg.fullDocument === 'true') {
-        for (const pageNode of figma.root.children) {
+        // the user want to switch the whole document
+        if (msg.fullDocument === 'true') {
+            for (const pageNode of figma.root.children) {
+                traverse(
+                    pageNode,
+                    msg.propertyName,
+                    msg.fromVariant,
+                    msg.toVariant,
+                    msg.deepSwitch === 'true',
+                    msg.mainComponentName
+                );
+            }
+        }
+        // the user selected something, then we look at the selection
+        else if (figma.currentPage.selection.length) {
+            for (const node of figma.currentPage.selection) {
+                traverse(
+                    node,
+                    msg.propertyName,
+                    msg.fromVariant,
+                    msg.toVariant,
+                    msg.deepSwitch === 'true',
+                    msg.mainComponentName
+                );
+            }
+        }
+        // the user didn't select anything, then let's change the entire page
+        else {
             traverse(
-                pageNode,
+                figma.currentPage,
                 msg.propertyName,
                 msg.fromVariant,
                 msg.toVariant,
@@ -130,39 +173,23 @@ figma.ui.onmessage = (msg) => {
                 msg.mainComponentName
             );
         }
-    }
-    // the user selected something, then we look at the selection
-    else if (figma.currentPage.selection.length) {
-        for (const node of figma.currentPage.selection) {
-            traverse(
-                node,
-                msg.propertyName,
-                msg.fromVariant,
-                msg.toVariant,
-                msg.deepSwitch === 'true',
-                msg.mainComponentName
+
+        // snackbar feedback
+        if (switchCount === 0) {
+            figma.notify(
+                `😕 Variant Switcher couldn't find anything to switch to "${msg.propertyName}=${msg.toVariant}".`
             );
+        } else if (switchCount === 1) {
+            figma.notify(`Changed 1 instance's "${msg.propertyName}" to "${msg.toVariant}".`);
+        } else {
+            figma.notify(`Changed ${switchCount} instances' "${msg.propertyName}" to "${msg.toVariant}".`);
+        }
+        figma.closePlugin();
+    } else if (msg.action === 'resize') {
+        if (msg.showAdvancedOptions) {
+            figma.ui.resize(DEFAULT_WIDTH, EXPANDED_HEIGHT);
+        } else {
+            figma.ui.resize(DEFAULT_WIDTH, COLLAPSED_HEIGHT);
         }
     }
-    // the user didn't select anything, then let's change the entire page
-    else {
-        traverse(
-            figma.currentPage,
-            msg.propertyName,
-            msg.fromVariant,
-            msg.toVariant,
-            msg.deepSwitch === 'true',
-            msg.mainComponentName
-        );
-    }
-
-    // snackbar feedback
-    if (switchCount === 0) {
-        figma.notify(`😕 Variant Switcher couldn't find anything to switch to "${msg.propertyName}=${msg.toVariant}".`);
-    } else if (switchCount === 1) {
-        figma.notify(`Changed 1 instance's "${msg.propertyName}" to "${msg.toVariant}".`);
-    } else {
-        figma.notify(`Changed ${switchCount} instances' "${msg.propertyName}" to "${msg.toVariant}".`);
-    }
-    figma.closePlugin();
 };

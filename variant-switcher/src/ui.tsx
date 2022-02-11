@@ -6,7 +6,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { KEYS } from './shared';
-import { Exchange } from './icons/index';
+import { Exchange, Dropdown } from './icons/index';
 import './ui.css';
 
 declare function require(path: string): any;
@@ -17,6 +17,7 @@ onmessage = (event) => {
 };
 
 const App: React.FC = () => {
+    // the states set here will be the default state a first time plugin user gets
     // basic options
     const [propertyName, setPropertyName] = React.useState('Theme');
     const [fromVariant, setFromVariant] = React.useState('Light');
@@ -26,6 +27,8 @@ const App: React.FC = () => {
     const [deepSwitch, setDeepSwitch] = React.useState<'true' | 'false'>('false');
     const [fullDocument, setFullDocument] = React.useState<'true' | 'false'>('false');
     const [mainComponentName, setMainComponentName] = React.useState('');
+
+    const [showAdvancedOptions, setShowAdvancedOptions] = React.useState(false);
 
     // load stored parameters from history
     // use a timer to help picking up the async update from onmessage
@@ -66,6 +69,12 @@ const App: React.FC = () => {
                 clearInterval(timerMainComponentName);
             }
         }, 50);
+        const timerShowAdvancedOptions = setInterval(() => {
+            if (LOCAL_STORAGE_DATA[KEYS.SHOW_ADVANCED_OPTIONS]) {
+                setShowAdvancedOptions(LOCAL_STORAGE_DATA[KEYS.SHOW_ADVANCED_OPTIONS]);
+                clearInterval(timerShowAdvancedOptions);
+            }
+        }, 50);
         return () => {
             clearInterval(timerPropertyName);
             clearInterval(timerFromVariant);
@@ -73,6 +82,7 @@ const App: React.FC = () => {
             clearInterval(timerDeepSwitch);
             clearInterval(timerFullDocument);
             clearInterval(timerMainComponentName);
+            clearInterval(timerShowAdvancedOptions);
         };
     }, []);
 
@@ -82,18 +92,20 @@ const App: React.FC = () => {
             parent.postMessage(
                 {
                     pluginMessage: {
+                        action: 'submit',
                         propertyName,
                         fromVariant,
                         toVariant,
                         deepSwitch,
                         fullDocument,
                         mainComponentName,
+                        showAdvancedOptions,
                     },
                 },
                 '*'
             );
         }
-    }, [propertyName, fromVariant, toVariant, deepSwitch, fullDocument, mainComponentName]);
+    }, [propertyName, fromVariant, toVariant, deepSwitch, fullDocument, mainComponentName, showAdvancedOptions]);
 
     return (
         <div>
@@ -136,73 +148,103 @@ const App: React.FC = () => {
                     }}
                 />
             </div>
-            <div className={'checkbox-row'}>
-                <input
-                    type={'checkbox'}
-                    onChange={(e) => {
-                        setDeepSwitch(e.target.value === 'true' ? 'false' : 'true');
-                    }}
-                    name={'swapChild'}
-                    value={deepSwitch}
-                    checked={deepSwitch === 'true'}
-                />
-                <div
-                    onClick={(e) => {
-                        setDeepSwitch(deepSwitch === 'true' ? 'false' : 'true');
-                    }}
-                >
-                    <label htmlFor={'swapChild'} title={'Look into child layers after parent instances are switched'}>
-                        Deep Switch
-                    </label>
-                    <div className={'hint-text'}>
-                        {deepSwitch === 'true' ? (
-                            <span>Plugin will switch all instances in the selected tree</span>
-                        ) : (
-                            <span>Plugin will not switch children after switching parent instance</span>
-                        )}
-                    </div>
+            <div
+                id={'dropdown-ui'}
+                onClick={() => {
+                    setShowAdvancedOptions(!showAdvancedOptions);
+                    parent.postMessage(
+                        {
+                            pluginMessage: {
+                                action: 'resize',
+                                showAdvancedOptions: !showAdvancedOptions,
+                            },
+                        },
+                        '*'
+                    );
+                }}
+            >
+                Advanced Options
+                <div id={'dropdown-icon'} className={!showAdvancedOptions ? 'flipped' : ''}>
+                    <Dropdown />
                 </div>
             </div>
-            <div className={'checkbox-row'}>
-                <input
-                    type={'checkbox'}
-                    onChange={(e) => {
-                        setFullDocument(e.target.value === 'true' ? 'false' : 'true');
-                    }}
-                    name={'fullDocumentSwitch'}
-                    value={fullDocument}
-                    checked={fullDocument === 'true'}
-                />
-                <div
-                    onClick={(e) => {
-                        setFullDocument(fullDocument === 'true' ? 'false' : 'true');
-                    }}
-                >
-                    <label htmlFor={'fullDocumentSwitch'} title={'Look into the entire document'}>
-                        Switch Full Document
-                    </label>
-                    <div className={'hint-text'}>
-                        {fullDocument === 'true' ? (
-                            <span>Plugin will scan through all pages in the current document</span>
-                        ) : (
-                            <span>Plugin will only scan the current selection</span>
-                        )}
+            {showAdvancedOptions && (
+                <>
+                    <div className={'checkbox-row'}>
+                        <input
+                            type={'checkbox'}
+                            onChange={(e) => {
+                                setDeepSwitch(e.target.value === 'true' ? 'false' : 'true');
+                            }}
+                            name={'swapChild'}
+                            value={deepSwitch}
+                            checked={deepSwitch === 'true'}
+                        />
+                        <div
+                            onClick={(e) => {
+                                setDeepSwitch(deepSwitch === 'true' ? 'false' : 'true');
+                            }}
+                        >
+                            <label
+                                htmlFor={'swapChild'}
+                                title={'Look into child layers after parent instances are switched'}
+                            >
+                                Deep Switch
+                            </label>
+                            <div className={'hint-text'}>
+                                {deepSwitch === 'true' ? (
+                                    <span>Plugin will switch all instances in the selected tree</span>
+                                ) : (
+                                    <span>Plugin will not switch children after switching parent instance</span>
+                                )}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div className={'input-row'}>
-                <label title={'Only check instance with this main component name'}>Main Component Name</label>
-                <input
-                    onChange={(e) => setMainComponentName(e.target.value)}
-                    name={'Main component name'}
-                    value={mainComponentName}
-                    onKeyDown={(e) => {
-                        if (e.code === 'Enter') {
-                            submit();
-                        }
-                    }}
-                />
-            </div>
+                    <div className={'checkbox-row'}>
+                        <input
+                            type={'checkbox'}
+                            onChange={(e) => {
+                                setFullDocument(e.target.value === 'true' ? 'false' : 'true');
+                            }}
+                            name={'fullDocumentSwitch'}
+                            value={fullDocument}
+                            checked={fullDocument === 'true'}
+                        />
+                        <div
+                            onClick={(e) => {
+                                setFullDocument(fullDocument === 'true' ? 'false' : 'true');
+                            }}
+                        >
+                            <label htmlFor={'fullDocumentSwitch'} title={'Look into the entire document'}>
+                                Switch Full Document
+                            </label>
+                            <div className={'hint-text'}>
+                                {fullDocument === 'true' ? (
+                                    <span>Plugin will switch all pages in the current document</span>
+                                ) : (
+                                    <span>
+                                        Plugin will only switch the current selection, or the current page if nothing is
+                                        selected
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    <div className={'input-row'}>
+                        <label title={'Only check instance with this main component name'}>Main Component Name</label>
+                        <input
+                            onChange={(e) => setMainComponentName(e.target.value)}
+                            name={'Main component name'}
+                            value={mainComponentName}
+                            onKeyDown={(e) => {
+                                if (e.code === 'Enter') {
+                                    submit();
+                                }
+                            }}
+                        />
+                    </div>
+                </>
+            )}
 
             <div id={'exchange-icon-container'}>
                 <button
@@ -218,9 +260,6 @@ const App: React.FC = () => {
             </div>
 
             <div className={'button-row'}>
-                <button className={'secondary'} onClick={submit} disabled={propertyName === '' || toVariant === ''}>
-                    Advanced ...
-                </button>
                 <button className={'primary'} onClick={submit}>
                     Switch Variant
                 </button>

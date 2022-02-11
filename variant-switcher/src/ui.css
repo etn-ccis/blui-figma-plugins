@@ -59,6 +59,7 @@ input:focus {
 .checkbox-row {
     display: flex;
     align-items: flex-start;
+    cursor: default;
 }
 .checkbox-row > div {
     margin-left: 0.75em;
@@ -102,4 +103,25 @@ input:focus {
 
 .hint-text {
     color: #0009;
+}
+
+#dropdown-ui {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+}
+
+#dropdown-ui:hover #dropdown-icon {
+    opacity: 1;
+}
+
+#dropdown-icon {
+    opacity: 0.3;
+    display: inline-block;
+    margin-left: 4px;
+}
+#dropdown-icon.flipped {
+    transform: rotate(180deg);
 }
