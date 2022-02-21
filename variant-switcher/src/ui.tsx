@@ -110,7 +110,7 @@ const App: React.FC = () => {
     return (
         <div>
             <div className={'input-row'}>
-                <label>Property Name</label>
+                <label className={'required'}>Property Name</label>
                 <input
                     onChange={(e) => setPropertyName(e.target.value)}
                     name={'Name of the property shared by instances'}
@@ -136,7 +136,7 @@ const App: React.FC = () => {
                 />
             </div>
             <div className={'input-row'}>
-                <label>To Variant</label>
+                <label className={'required'}>To Variant</label>
                 <input
                     onChange={(e) => setToVariant(e.target.value)}
                     name={'The variant name to change into'}
@@ -220,18 +220,15 @@ const App: React.FC = () => {
                             </label>
                             <div className={'hint-text'}>
                                 {fullDocument === 'true' ? (
-                                    <span>Plugin will switch all pages in the current document</span>
+                                    <span>Plugin will switch the entire document</span>
                                 ) : (
-                                    <span>
-                                        Plugin will only switch the current selection, or the current page if nothing is
-                                        selected
-                                    </span>
+                                    <span>Plugin will only switch the current selection or the current page</span>
                                 )}
                             </div>
                         </div>
                     </div>
                     <div className={'input-row'}>
-                        <label title={'Only check instance with this main component name'}>Main Component Name</label>
+                        <label title={'Only switch instances with this main component name'}>Main Component Name</label>
                         <input
                             onChange={(e) => setMainComponentName(e.target.value)}
                             name={'Main component name'}
