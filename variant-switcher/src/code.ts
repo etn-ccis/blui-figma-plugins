@@ -5,9 +5,10 @@
  **/
 
 import { KEYS } from './shared';
+import { blurredMatch } from './utils';
 
 const DELIMITER = ',';
-const EXPANDED_HEIGHT = 402;
+const EXPANDED_HEIGHT = 437;
 const COLLAPSED_HEIGHT = 234;
 const DEFAULT_WIDTH = 300;
 
@@ -27,6 +28,9 @@ figma.clientStorage.getAsync(KEYS.DEEP_SWITCH).then((val) => {
 });
 figma.clientStorage.getAsync(KEYS.FULL_DOCUMENT).then((val) => {
     if (val) figma.ui.postMessage({ param: KEYS.FULL_DOCUMENT, val });
+});
+figma.clientStorage.getAsync(KEYS.EXACT_MATCH).then((val) => {
+    if (val) figma.ui.postMessage({ param: KEYS.EXACT_MATCH, val });
 });
 figma.clientStorage.getAsync(KEYS.MAIN_COMPONENT_NAME).then((val) => {
     if (val) figma.ui.postMessage({ param: KEYS.MAIN_COMPONENT_NAME, val });
@@ -56,6 +60,7 @@ function traverse(
     fromVariant: string,
     toVariant: string,
     deepSwitch: boolean,
+    exactMatch: boolean,
     mainComponentName: string
 ) {
     // find an instance
@@ -71,17 +76,37 @@ function traverse(
 
         let propertyIndex = -1;
         if (fromVariant !== '') {
-            propertyIndex = nodeProperties.indexOf(`${propertyName}=${fromVariant}`);
+            if (exactMatch) {
+                propertyIndex = nodeProperties.indexOf(`${propertyName}=${fromVariant}`);
+            } else {
+                propertyIndex = nodeProperties.findIndex((property: string): boolean =>
+                    blurredMatch(propertyName, fromVariant, property)
+                );
+            }
         } else {
             // the user didn't provide any fromVariant
             // changing all instances with the "propertyName" property to "toVariant"
-            propertyIndex = nodeProperties.findIndex((property: string): boolean =>
-                property.startsWith(`${propertyName}=`)
-            );
+            if (exactMatch) {
+                propertyIndex = nodeProperties.findIndex((property: string): boolean =>
+                    property.startsWith(`${propertyName}=`)
+                );
+            } else {
+                propertyIndex = nodeProperties.findIndex((property: string): boolean =>
+                    blurredMatch(propertyName, '', property)
+                );
+            }
         }
 
         // do not swap if somehow the instance is already on the "toVariant"
-        const isOnToVariant = nodeProperties.indexOf(`${propertyName}=${toVariant}`) !== -1;
+        let isOnToVariant = false;
+        if (exactMatch) {
+            isOnToVariant = node.variantProperties[propertyName] === toVariant;
+        } else {
+            isOnToVariant =
+                nodeProperties.findIndex((property: string): boolean =>
+                    blurredMatch(propertyName, toVariant, property)
+                ) !== -1;
+        }
 
         // do the swapping
         if (
@@ -89,11 +114,26 @@ function traverse(
             mainComponentName === ''
         ) {
             if (node.mainComponent.parent.type === 'COMPONENT_SET' && propertyIndex !== -1 && !isOnToVariant) {
-                nodeProperties[propertyIndex] = `${propertyName}=${toVariant}`;
-                let changeToSibling = node.mainComponent.parent.findChild(
-                    (sibling: ComponentNode) =>
-                        trimPropertyWhiteSpace(sibling.name).join(DELIMITER) === nodeProperties.join(DELIMITER)
-                );
+                let changeToSibling: ComponentNode;
+                if (exactMatch) {
+                    nodeProperties[propertyIndex] = `${propertyName}=${toVariant}`;
+                    changeToSibling = node.mainComponent.parent.findChild(
+                        (sibling: ComponentNode) =>
+                            trimPropertyWhiteSpace(sibling.name).join(DELIMITER) === nodeProperties.join(DELIMITER)
+                    );
+                } else {
+                    const nodePropertiesJSON = { ...node.variantProperties };
+                    changeToSibling = node.mainComponent.parent.findChild((sibling: ComponentNode): boolean => {
+                        const siblingNodeProperties = trimPropertyWhiteSpace(sibling.name);
+                        if (blurredMatch(propertyName, toVariant, siblingNodeProperties[propertyIndex])) {
+                            const propertyToChange = siblingNodeProperties[propertyIndex].split('=')[0].trim();
+                            nodePropertiesJSON[propertyToChange] = sibling.variantProperties[propertyToChange];
+                            return JSON.stringify(nodePropertiesJSON) === JSON.stringify(sibling.variantProperties);
+                        } else {
+                            return false;
+                        }
+                    });
+                }
                 // we found a sibling with the property swapped out
                 if (changeToSibling) {
                     node.swapComponent(changeToSibling);
@@ -103,8 +143,8 @@ function traverse(
                 // we couldn't find a good sibling with the exact property,
                 // but try again to find at least one with the property we care about
                 else {
-                    changeToSibling = node.mainComponent.parent.findChild((sibling: ComponentNode) =>
-                        sibling.name.split(DELIMITER).includes(`${propertyName}=${toVariant}`)
+                    changeToSibling = node.mainComponent.parent.findChild(
+                        (sibling: ComponentNode) => sibling.variantProperties[propertyName] === toVariant
                     );
 
                     if (changeToSibling) {
@@ -120,7 +160,7 @@ function traverse(
     // if deepSwitch is checked and parent is swapped, we don't want to look further in this layer tree
     if ('children' in node && (deepSwitch || !parentSwapped)) {
         for (const child of node.children) {
-            traverse(child, propertyName, fromVariant, toVariant, deepSwitch, mainComponentName);
+            traverse(child, propertyName, fromVariant, toVariant, deepSwitch, exactMatch, mainComponentName);
         }
     }
 }
@@ -133,6 +173,7 @@ figma.ui.onmessage = (msg) => {
         figma.clientStorage.setAsync(KEYS.TO_VARIANT, msg.toVariant);
         figma.clientStorage.setAsync(KEYS.DEEP_SWITCH, msg.deepSwitch);
         figma.clientStorage.setAsync(KEYS.FULL_DOCUMENT, msg.fullDocument);
+        figma.clientStorage.setAsync(KEYS.EXACT_MATCH, msg.exactMatch);
         figma.clientStorage.setAsync(KEYS.MAIN_COMPONENT_NAME, msg.mainComponentName);
         figma.clientStorage.setAsync(KEYS.SHOW_ADVANCED_OPTIONS, msg.showAdvancedOptions);
 
@@ -145,6 +186,7 @@ figma.ui.onmessage = (msg) => {
                     msg.fromVariant,
                     msg.toVariant,
                     msg.deepSwitch === 'true',
+                    msg.exactMatch === 'true',
                     msg.mainComponentName
                 );
             }
@@ -158,6 +200,7 @@ figma.ui.onmessage = (msg) => {
                     msg.fromVariant,
                     msg.toVariant,
                     msg.deepSwitch === 'true',
+                    msg.exactMatch === 'true',
                     msg.mainComponentName
                 );
             }
@@ -170,25 +213,30 @@ figma.ui.onmessage = (msg) => {
                 msg.fromVariant,
                 msg.toVariant,
                 msg.deepSwitch === 'true',
+                msg.exactMatch === 'true',
                 msg.mainComponentName
             );
         }
+
+        // display snackbar message with ellipsis, so that it looks less awkward when exact match is off
+        const notifyPropertyName = msg.exactMatch === 'true' ? msg.propertyName : `...${msg.propertyName}...`;
+        const notifyToVariant = msg.exactMatch === 'true' ? msg.toVariant : `...${msg.toVariant}...`;
 
         // snackbar feedback
         if (switchCount === 0) {
             if (msg.mainComponentName !== '') {
                 figma.notify(
-                    `😕 Variant Switcher couldn't find any "${msg.mainComponentName}" to switch to "${msg.propertyName}=${msg.toVariant}".`
+                    `😕 Variant Switcher couldn't find any "${msg.mainComponentName}" to switch to "${notifyPropertyName}=${notifyToVariant}".`
                 );
             } else {
                 figma.notify(
-                    `😕 Variant Switcher couldn't find anything to switch to "${msg.propertyName}=${msg.toVariant}".`
+                    `😕 Variant Switcher couldn't find anything to switch to "${notifyPropertyName}=${notifyToVariant}".`
                 );
             }
         } else if (switchCount === 1) {
-            figma.notify(`Changed 1 instance's "${msg.propertyName}" to "${msg.toVariant}".`);
+            figma.notify(`Changed 1 instance's "${notifyPropertyName}" to "${notifyToVariant}".`);
         } else {
-            figma.notify(`Changed ${switchCount} instances' "${msg.propertyName}" to "${msg.toVariant}".`);
+            figma.notify(`Changed ${switchCount} instances' "${notifyPropertyName}" to "${notifyToVariant}".`);
         }
         figma.closePlugin();
     } else if (msg.action === 'resize') {

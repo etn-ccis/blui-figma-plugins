@@ -5,7 +5,8 @@
 ### Added
 
 -   Optional field "Main Component Name": Only check for the components with the matching main component name.
--   Option to scan and swap the whole document, rather than just the current page. ([#19](https://github.com/brightlayer-ui/figma-plugins/issues/19))
+-   Option to scan and switch the whole document, rather than just the current page / selection. ([#19](https://github.com/brightlayer-ui/figma-plugins/issues/19))
+-   Option to toggle on / off "exact match" to allow users to do a blurred search (case-insensitive, substring search, ignore white spaces). ([#21](https://github.com/brightlayer-ui/figma-plugins/issues/21))
 
 ### Changed
 

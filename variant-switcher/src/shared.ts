@@ -10,6 +10,7 @@ export const KEYS = {
     TO_VARIANT: 'to-variant',
     DEEP_SWITCH: 'deep-switch',
     FULL_DOCUMENT: 'full-document',
+    EXACT_MATCH: 'exact-match',
     MAIN_COMPONENT_NAME: 'main-component-name',
     SHOW_ADVANCED_OPTIONS: 'show-advanced-options',
 };

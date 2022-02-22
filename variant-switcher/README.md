@@ -16,6 +16,7 @@ The Variant Switcher plugin has four input fields:
 | From Variant         | the current value you want to target (leave blank to select all instances with the selected property regardless of the current value)                                              | no        |
 | To Variant           | the new value you want to set the property to                                                                                                                                      | yes       |
 | Deep Switch          | When unchecked, the plugin will not switch children after switching parent instance. ([Diagram explanation](./_assets_/deep-switch-diagram.png))                                   | yes       |
+| Exact Match          | Whether to check for the exact property name and variant name                                                                                                                      | yes       |
 | Switch Full Document | When checked, the plugin will traverse through the entire document. When unchecked, the plugin will only switch the current selection, or the current page if nothing is selected. | yes       |
 | Main Component Name  | Change only instances with the specified main component name                                                                                                                       | no        |
 

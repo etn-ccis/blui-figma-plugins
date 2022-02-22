@@ -26,6 +26,7 @@ const App: React.FC = () => {
     // advanced options
     const [deepSwitch, setDeepSwitch] = React.useState<'true' | 'false'>('false');
     const [fullDocument, setFullDocument] = React.useState<'true' | 'false'>('false');
+    const [exactMatch, setExactMatch] = React.useState<'true' | 'false'>('true');
     const [mainComponentName, setMainComponentName] = React.useState('');
 
     const [showAdvancedOptions, setShowAdvancedOptions] = React.useState(false);
@@ -63,6 +64,12 @@ const App: React.FC = () => {
                 clearInterval(timerFullDocument);
             }
         }, 50);
+        const timerExactMatch = setInterval(() => {
+            if (LOCAL_STORAGE_DATA[KEYS.EXACT_MATCH]) {
+                setExactMatch(LOCAL_STORAGE_DATA[KEYS.EXACT_MATCH]);
+                clearInterval(timerExactMatch);
+            }
+        }, 50);
         const timerMainComponentName = setInterval(() => {
             if (LOCAL_STORAGE_DATA[KEYS.MAIN_COMPONENT_NAME]) {
                 setMainComponentName(LOCAL_STORAGE_DATA[KEYS.MAIN_COMPONENT_NAME]);
@@ -81,6 +88,7 @@ const App: React.FC = () => {
             clearInterval(timerToVariant);
             clearInterval(timerDeepSwitch);
             clearInterval(timerFullDocument);
+            clearInterval(timerExactMatch);
             clearInterval(timerMainComponentName);
             clearInterval(timerShowAdvancedOptions);
         };
@@ -98,6 +106,7 @@ const App: React.FC = () => {
                         toVariant,
                         deepSwitch,
                         fullDocument,
+                        exactMatch,
                         mainComponentName,
                         showAdvancedOptions,
                     },
@@ -105,7 +114,16 @@ const App: React.FC = () => {
                 '*'
             );
         }
-    }, [propertyName, fromVariant, toVariant, deepSwitch, fullDocument, mainComponentName, showAdvancedOptions]);
+    }, [
+        propertyName,
+        fromVariant,
+        toVariant,
+        deepSwitch,
+        fullDocument,
+        exactMatch,
+        mainComponentName,
+        showAdvancedOptions,
+    ]);
 
     return (
         <div>
@@ -227,6 +245,27 @@ const App: React.FC = () => {
                             </div>
                         </div>
                     </div>
+                    <div className={'checkbox-row'} style={{ alignItems: 'center' }}>
+                        <input
+                            type={'checkbox'}
+                            onChange={(e) => {
+                                setExactMatch(e.target.value === 'true' ? 'false' : 'true');
+                            }}
+                            name={'exactMatch'}
+                            value={exactMatch}
+                            checked={exactMatch === 'true'}
+                        />
+                        <div
+                            onClick={(e) => {
+                                setExactMatch(exactMatch === 'true' ? 'false' : 'true');
+                            }}
+                            style={{ height: 'unset' }}
+                        >
+                            <label htmlFor={'exactMatch'} title={'Whether to do an exact match or a blurred search'}>
+                                Exact Match
+                            </label>
+                        </div>
+                    </div>
                     <div className={'input-row'}>
                         <label title={'Only switch instances with this main component name'}>Main Component Name</label>
                         <input
@@ -257,7 +296,7 @@ const App: React.FC = () => {
             </div>
 
             <div className={'button-row'}>
-                <button className={'primary'} onClick={submit}>
+                <button className={'primary'} onClick={submit} disabled={propertyName == '' || toVariant == ''}>
                     Switch Variant
                 </button>
             </div>
