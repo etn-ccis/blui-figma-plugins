@@ -5,7 +5,7 @@
  **/
 
 import { KEYS } from './shared';
-import { blurredMatch } from './utils';
+import { fuzzyMatch } from './utils';
 
 const DELIMITER = ',';
 const EXPANDED_HEIGHT = 437;
@@ -80,7 +80,7 @@ function traverse(
                 propertyIndex = nodeProperties.indexOf(`${propertyName}=${fromVariant}`);
             } else {
                 propertyIndex = nodeProperties.findIndex((property: string): boolean =>
-                    blurredMatch(propertyName, fromVariant, property)
+                    fuzzyMatch(propertyName, fromVariant, property)
                 );
             }
         } else {
@@ -92,7 +92,7 @@ function traverse(
                 );
             } else {
                 propertyIndex = nodeProperties.findIndex((property: string): boolean =>
-                    blurredMatch(propertyName, '', property)
+                    fuzzyMatch(propertyName, '', property)
                 );
             }
         }
@@ -104,7 +104,7 @@ function traverse(
         } else {
             isOnToVariant =
                 nodeProperties.findIndex((property: string): boolean =>
-                    blurredMatch(propertyName, toVariant, property)
+                    fuzzyMatch(propertyName, toVariant, property)
                 ) !== -1;
         }
 
@@ -125,7 +125,7 @@ function traverse(
                     const nodePropertiesJSON = { ...node.variantProperties };
                     changeToSibling = node.mainComponent.parent.findChild((sibling: ComponentNode): boolean => {
                         const siblingNodeProperties = trimPropertyWhiteSpace(sibling.name);
-                        if (blurredMatch(propertyName, toVariant, siblingNodeProperties[propertyIndex])) {
+                        if (fuzzyMatch(propertyName, toVariant, siblingNodeProperties[propertyIndex])) {
                             const propertyToChange = siblingNodeProperties[propertyIndex].split('=')[0].trim();
                             nodePropertiesJSON[propertyToChange] = sibling.variantProperties[propertyToChange];
                             return JSON.stringify(nodePropertiesJSON) === JSON.stringify(sibling.variantProperties);

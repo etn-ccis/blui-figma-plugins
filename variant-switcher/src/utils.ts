@@ -7,7 +7,7 @@ export const sanitizeText = (str: string): string => {
  * @param givenVariant "From Variant" or "To Variant" as specified by the user
  * @param givenPair The property-variant pair, as appears in the main component layer name
  */
-export const blurredMatch = (givenProperty: string, givenVariant: string, givenPair: string) => {
+export const fuzzyMatch = (givenProperty: string, givenVariant: string, givenPair: string) => {
     const newProperty = sanitizeText(givenProperty);
     const newVariant = sanitizeText(givenVariant);
     const instanceArray = givenPair.split('=');
