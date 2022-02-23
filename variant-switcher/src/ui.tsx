@@ -261,7 +261,7 @@ const App: React.FC = () => {
                             }}
                             style={{ height: 'unset' }}
                         >
-                            <label htmlFor={'exactMatch'} title={'Whether to do an exact match or a blurred search'}>
+                            <label htmlFor={'exactMatch'} title={'Whether to do an exact match or a fuzzy search'}>
                                 Exact Match
                             </label>
                         </div>
