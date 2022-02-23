@@ -52,3 +52,5 @@ yarn && yarn build
 The plugin should now be running happily.
 
 > To build in production mode, run `yarn && yarn build:production`. See results in `/dist` folder.
+
+Now you can run the dev version via `Plugins > Development > Variant Switcher`.
