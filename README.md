@@ -1,6 +1,6 @@
 # Figma Plugins
 
-This library contains various plugins developed by the PX Blue team for use with [Figma](https://www.figma.com/).
+This library contains various plugins developed by the Brightlayer UI team for use with [Figma](https://www.figma.com/).
 
 The following plugins are avalable:
 

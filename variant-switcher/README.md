@@ -8,14 +8,17 @@ The Variant Switcher plugin takes all of your selected component instances and r
 
 ## Usage
 
-The Variant Switcher plugin has four input fields:
+The Variant Switcher plugin has several user controls:
 
-| Input Field   | Description                                                                                                                                      | Required? |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
-| Property Name | the property you want to change                                                                                                                  | yes       |
-| From Variant  | the current value you want to target (leave blank to select all instances with the selected property regardless of the current value)            | no        |
-| To Variant    | the new value you want to set the property to                                                                                                    | yes       |
-| Deep Switch   | When unchecked, the plugin will not switch children after switching parent instance. ([Diagram explanation](./_assets_/deep-switch-diagram.png)) | yes       |
+| Input Field          | Description                                                                                                                                                                        | Required? |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| Property Name        | the property you want to change                                                                                                                                                    | yes       |
+| From Variant         | the current value you want to target (leave blank to select all instances with the specified property name regardless of the current value)                                        | no        |
+| To Variant           | the new value you want to set the property to                                                                                                                                      | yes       |
+| Deep Switch          | When unchecked, the plugin will not switch children after switching their parent instances. ([Diagram explanation](./_assets_/deep-switch-diagram.png))                            | (yes)     |
+| Switch Full Document | When checked, the plugin will traverse through the entire document. When unchecked, the plugin will only switch the current selection, or the current page if nothing is selected. | (yes)     |
+| Exact Match          | Whether to check for the exact property name and variant name or do a fuzzy search instead.                                                                                        | (yes)     |
+| Main Component Name  | Change only instances with the specified main component name                                                                                                                       | no        |
 
 ## Example
 
@@ -30,7 +33,7 @@ Consider the example above. In this case, all of the components have a `Theme` p
 To run the plugin locally, first clone the repository:
 
 ```sh
-git clone https://github.com/pxblue/figma-plugins
+git clone https://github.com/brightlayer-ui/figma-plugins
 ```
 
 Then, link the plugin to Figma:
@@ -49,3 +52,5 @@ yarn && yarn build
 The plugin should now be running happily.
 
 > To build in production mode, run `yarn && yarn build:production`. See results in `/dist` folder.
+
+Now you can run the dev version via `Plugins > Development > Variant Switcher`.
