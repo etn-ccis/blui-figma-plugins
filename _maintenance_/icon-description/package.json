@@ -4,7 +4,8 @@
     "private": true,
     "main": "build/code.js",
     "scripts": {
-        "build": "mkdir -p build && node ./utils/build-material.js && tsc -p tsconfig.json && node ./utils/concat-files.js"
+        "build": "mkdir -p build && node ./utils/build-material.js && tsc -p tsconfig.json && node ./utils/concat-files.js",
+        "generate:licenses": "npm-license-crawler -onlyDirectDependencies -json LICENSES.json"
     },
     "author": "Brightlayer UI <brightlayer-ui@eaton.com>",
     "license": "BSD-3-Clause",
@@ -12,5 +13,8 @@
         "@types/figma": "^1.0.3",
         "node-fetch": "^2.6.1",
         "typescript": "^4.3.5"
+    },
+    "devDependencies": {
+        "npm-license-crawler": "^0.2.1"
     }
 }
