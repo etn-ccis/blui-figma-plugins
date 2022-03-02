@@ -1,0 +1,20 @@
+{
+    "@types/figma@1.0.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+        "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
+        "parents": "icon-description"
+    },
+    "node-fetch@2.6.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/bitinn/node-fetch",
+        "licenseUrl": "https://github.com/bitinn/node-fetch/raw/master/LICENSE.md",
+        "parents": "icon-description"
+    },
+    "typescript@4.3.5": {
+        "licenses": "Apache-2.0",
+        "repository": "https://github.com/Microsoft/TypeScript",
+        "licenseUrl": "https://github.com/Microsoft/TypeScript/raw/master/LICENSE.txt",
+        "parents": "icon-description"
+    }
+}
