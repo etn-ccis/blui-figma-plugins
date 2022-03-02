@@ -8,7 +8,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "npx webpack",
         "build:production": "npx webpack --mode production",
-        "generate:licenses": "npm-license-crawler -onlyDirectDependencies -json LICENSES.json && cd .. && cd ./_maintenance_/icon-description && yarn generate:licenses"
+        "generate:licenses": "npm-license-crawler -onlyDirectDependencies -json LICENSES.json"
     },
     "private": true,
     "prettier": "@brightlayer-ui/prettier-config",
