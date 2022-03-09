@@ -1,6 +1,16 @@
 # Changelog
 
-## v3.0.0 (Feb 23, 2022)
+## v5 (Mar 9, 2022)
+
+### Fixed
+
+-   Fixed an issue that caused the plugin to crash when the instance has no properties on it. ([#27](https://github.com/brightlayer-ui/figma-plugins/issues/27))
+
+### Changed
+
+-   Changed the way this changlog is managed to better match with Figma's versioning convention.
+
+## v3, v4 (Feb 23, 2022)
 
 ### Added
 
@@ -13,11 +23,7 @@
 -   Grouped advanced options behind an "Advanced Options" dropdown.
 -   Allowed white space / no white space around the delimiter `,` between different instance names. ([#16](https://github.com/brightlayer-ui/figma-plugins/issues/16))
 
-## v2.0.1 (Sept 29, 2021)
-
--   Added `editorType` to `manifest.json`
-
-## v2.0.0 (June 30, 2021)
+## v2 (June 30, 2021)
 
 ### Added
 
@@ -26,9 +32,13 @@
 
 ### Changed
 
+-   Added `editorType` to `manifest.json` to limit the plugin to be used on Figma Design only.
+
+### Changed
+
 -   When an instance already has the specified "To Variant" property value, no variant switching will be performed.
 
-## v1.0.0 (May 12, 2021)
+## v1 (May 12, 2021)
 
 ### Added
 

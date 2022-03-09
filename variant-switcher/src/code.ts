@@ -68,7 +68,7 @@ function traverse(
 
     let parentSwapped = false;
 
-    if (node && node.type == 'INSTANCE' && node.mainComponent.parent) {
+    if (node && node.type == 'INSTANCE' && node.mainComponent.parent && node.variantProperties) {
         let nodeProperties = trimPropertyWhiteSpace(node.mainComponent.name);
 
         // the instance comes from a component with variances set in them
@@ -100,6 +100,8 @@ function traverse(
         // do not swap if somehow the instance is already on the "toVariant"
         let isOnToVariant = false;
         if (exactMatch) {
+            console.log('here');
+            console.log(node, node.variantProperties);
             isOnToVariant = node.variantProperties[propertyName] === toVariant;
         } else {
             isOnToVariant =
