@@ -68,7 +68,7 @@ function traverse(
 
     let parentSwapped = false;
 
-    if (node && node.type == 'INSTANCE' && node.mainComponent.parent) {
+    if (node && node.type == 'INSTANCE' && node.mainComponent.parent && node.variantProperties) {
         let nodeProperties = trimPropertyWhiteSpace(node.mainComponent.name);
 
         // the instance comes from a component with variances set in them
