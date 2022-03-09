@@ -100,8 +100,6 @@ function traverse(
         // do not swap if somehow the instance is already on the "toVariant"
         let isOnToVariant = false;
         if (exactMatch) {
-            console.log('here');
-            console.log(node, node.variantProperties);
             isOnToVariant = node.variantProperties[propertyName] === toVariant;
         } else {
             isOnToVariant =
