@@ -1,0 +1,62 @@
+{
+    "css-loader@3.6.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/webpack-contrib/css-loader",
+        "licenseUrl": "https://github.com/webpack-contrib/css-loader/raw/master/LICENSE",
+        "parents": "figma-plugin-variant-switcher"
+    },
+    "html-webpack-inline-source-plugin@0.0.10": {
+        "licenses": "MIT",
+        "repository": "https://github.com/dustinjackson/html-webpack-inline-source-plugin",
+        "licenseUrl": "https://github.com/dustinjackson/html-webpack-inline-source-plugin/raw/master/LICENSE",
+        "parents": "figma-plugin-variant-switcher"
+    },
+    "html-webpack-plugin@3.2.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jantimon/html-webpack-plugin",
+        "licenseUrl": "https://github.com/jantimon/html-webpack-plugin/raw/master/LICENSE",
+        "parents": "figma-plugin-variant-switcher"
+    },
+    "react-dom@17.0.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebook/react",
+        "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
+        "parents": "figma-plugin-variant-switcher"
+    },
+    "react@17.0.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebook/react",
+        "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
+        "parents": "figma-plugin-variant-switcher"
+    },
+    "style-loader@2.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/webpack-contrib/style-loader",
+        "licenseUrl": "https://github.com/webpack-contrib/style-loader/raw/master/LICENSE",
+        "parents": "figma-plugin-variant-switcher"
+    },
+    "ts-loader@6.2.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/TypeStrong/ts-loader",
+        "licenseUrl": "https://github.com/TypeStrong/ts-loader/raw/master/LICENSE",
+        "parents": "figma-plugin-variant-switcher"
+    },
+    "url-loader@4.1.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/webpack-contrib/url-loader",
+        "licenseUrl": "https://github.com/webpack-contrib/url-loader/raw/master/LICENSE",
+        "parents": "figma-plugin-variant-switcher"
+    },
+    "webpack-cli@3.3.12": {
+        "licenses": "MIT",
+        "repository": "https://github.com/webpack/webpack-cli",
+        "licenseUrl": "https://github.com/webpack/webpack-cli/raw/master/LICENSE",
+        "parents": "figma-plugin-variant-switcher"
+    },
+    "webpack@4.46.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/webpack/webpack",
+        "licenseUrl": "https://github.com/webpack/webpack/raw/master/LICENSE",
+        "parents": "figma-plugin-variant-switcher"
+    }
+}
