@@ -11,7 +11,7 @@
     "license": "BSD-3-Clause",
     "dependencies": {
         "@types/figma": "^1.0.3",
-        "node-fetch": "^2.6.1",
+        "node-fetch": "^2.6.7",
         "typescript": "^4.3.5"
     },
     "devDependencies": {
