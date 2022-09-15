@@ -128,7 +128,7 @@ const App: React.FC = () => {
     return (
         <div>
             <div className={'input-row'}>
-                <label className={'required'}>Property Name</label>
+                <label className={'required'}>Property name</label>
                 <input
                     onChange={(e) => setPropertyName(e.target.value)}
                     name={'Name of the property shared by instances'}
@@ -141,7 +141,7 @@ const App: React.FC = () => {
                 />
             </div>
             <div className={'input-row'}>
-                <label>From Variant</label>{' '}
+                <label>From variant</label>{' '}
                 <input
                     onChange={(e) => setFromVariant(e.target.value)}
                     name={'The variant name to change from'}
@@ -154,7 +154,7 @@ const App: React.FC = () => {
                 />
             </div>
             <div className={'input-row'}>
-                <label className={'required'}>To Variant</label>
+                <label className={'required'}>To variant</label>
                 <input
                     onChange={(e) => setToVariant(e.target.value)}
                     name={'The variant name to change into'}
@@ -181,7 +181,7 @@ const App: React.FC = () => {
                     );
                 }}
             >
-                Advanced Options
+                Advanced options
                 <div id={'dropdown-icon'} className={!showAdvancedOptions ? 'flipped' : ''}>
                     <Dropdown />
                 </div>
@@ -207,7 +207,7 @@ const App: React.FC = () => {
                                 htmlFor={'swapChild'}
                                 title={'Look into child layers after parent instances are switched'}
                             >
-                                Deep Switch
+                                Deep switch
                             </label>
                             <div className={'hint-text'}>
                                 {deepSwitch === 'true' ? (
@@ -234,7 +234,7 @@ const App: React.FC = () => {
                             }}
                         >
                             <label htmlFor={'fullDocumentSwitch'} title={'Look into the entire document'}>
-                                Switch Full Document
+                                Switch full document
                             </label>
                             <div className={'hint-text'}>
                                 {fullDocument === 'true' ? (
@@ -262,12 +262,12 @@ const App: React.FC = () => {
                             style={{ height: 'unset' }}
                         >
                             <label htmlFor={'exactMatch'} title={'Whether to do an exact match or a fuzzy search'}>
-                                Exact Match
+                                Exact match
                             </label>
                         </div>
                     </div>
                     <div className={'input-row'}>
-                        <label title={'Only switch instances with this main component name'}>Main Component Name</label>
+                        <label title={'Only switch instances with this main component name'}>Main component name</label>
                         <input
                             onChange={(e) => setMainComponentName(e.target.value)}
                             name={'Main component name'}
@@ -297,7 +297,7 @@ const App: React.FC = () => {
 
             <div className={'button-row'}>
                 <button className={'primary'} onClick={submit} disabled={propertyName == '' || toVariant == ''}>
-                    Switch Variants
+                    Switch variants
                 </button>
             </div>
         </div>
