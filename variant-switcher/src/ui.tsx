@@ -297,7 +297,7 @@ const App: React.FC = () => {
 
             <div className={'button-row'}>
                 <button className={'primary'} onClick={submit} disabled={propertyName == '' || toVariant == ''}>
-                    Switch Variant
+                    Switch Variants
                 </button>
             </div>
         </div>
