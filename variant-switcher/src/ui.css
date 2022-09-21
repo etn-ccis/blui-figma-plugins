@@ -115,7 +115,7 @@ input:not([type="checkbox"]):focus {
   
 
 .hint-text {
-    color: var(--figma-color-text-disabled);
+    color: var(--figma-color-text-secondary);
 }
 
 #dropdown-ui {
