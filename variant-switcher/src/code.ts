@@ -12,7 +12,7 @@ const EXPANDED_HEIGHT = 437;
 const COLLAPSED_HEIGHT = 234;
 const DEFAULT_WIDTH = 300;
 
-figma.showUI(__html__, { visible: false, width: DEFAULT_WIDTH, height: COLLAPSED_HEIGHT });
+figma.showUI(__html__, { themeColors: true, visible: false, width: DEFAULT_WIDTH, height: COLLAPSED_HEIGHT });
 
 figma.clientStorage.getAsync(KEYS.PROPERTY_NAME).then((val) => {
     if (val) figma.ui.postMessage({ param: KEYS.PROPERTY_NAME, val });
