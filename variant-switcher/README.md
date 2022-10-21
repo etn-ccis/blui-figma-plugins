@@ -38,9 +38,8 @@ git clone https://github.com/brightlayer-ui/figma-plugins
 
 Then, link the plugin to Figma:
 
--   Open the Figma desktop app and in the toolbar go to `Plugins > Development > New Plugin`.
--   In the dialog box, under "Link existing plugin" either click the box to select a file or drag and drop it into the dotted box.
-    -   Use the `manifest.json` file from the repo you just cloned.
+-   Open the Figma desktop app and in the toolbar go to `Plugins > Development > Import Plugin from Manifest...`.
+-   Select the `manifest.json` file from the repo you just cloned.
 
 Finally, build the plugin:
 

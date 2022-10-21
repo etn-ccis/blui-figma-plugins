@@ -1,5 +1,10 @@
 # Changelog
 
+## v6 (Sept 26, 2022)
+
+-   Added support for dark theme. ([#35](https://github.com/brightlayer-ui/figma-plugins/issues/35); thanks, @Jerryjappinen!)
+-   Added support for FigJam. ([#23](https://github.com/brightlayer-ui/figma-plugins/issues/23))
+
 ## v5 (Mar 9, 2022)
 
 ### Fixed

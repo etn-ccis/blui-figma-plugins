@@ -23,12 +23,12 @@
         "style-loader": "^2.0.0",
         "ts-loader": "^6.0.4",
         "url-loader": "^4.1.1",
-        "webpack": "^4.38.0",
+        "webpack": "^4.46.0",
         "webpack-cli": "^3.3.6"
     },
     "devDependencies": {
         "@brightlayer-ui/prettier-config": "^1.0.3",
-        "@figma/plugin-typings": "^1.26.0",
+        "@figma/plugin-typings": "^1.51.0",
         "@types/react": "^17.0.5",
         "@types/react-dom": "^17.0.4",
         "npm-license-crawler": "^0.2.1",
