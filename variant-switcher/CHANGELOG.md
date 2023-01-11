@@ -2,14 +2,14 @@
 
 ## v6 (Sept 26, 2022)
 
--   Added support for dark theme. ([#35](https://github.com/brightlayer-ui/figma-plugins/issues/35); thanks, @Jerryjappinen!)
--   Added support for FigJam. ([#23](https://github.com/brightlayer-ui/figma-plugins/issues/23))
+-   Added support for dark theme. ([#35](https://github.com/etn-ccis/blui-figma-plugins/issues/35); thanks, @Jerryjappinen!)
+-   Added support for FigJam. ([#23](https://github.com/etn-ccis/blui-figma-plugins/issues/23))
 
 ## v5 (Mar 9, 2022)
 
 ### Fixed
 
--   Fixed an issue that caused the plugin to crash when the instance has no properties on it. ([#27](https://github.com/brightlayer-ui/figma-plugins/issues/27))
+-   Fixed an issue that caused the plugin to crash when the instance has no properties on it. ([#27](https://github.com/etn-ccis/blui-figma-plugins/issues/27))
 
 ### Changed
 
@@ -20,13 +20,13 @@
 ### Added
 
 -   Optional field "Main Component Name": Only check for the components with the matching main component name.
--   Option to scan and switch the whole document, rather than just the current page / selection. ([#19](https://github.com/brightlayer-ui/figma-plugins/issues/19))
--   Option to toggle on / off "exact match" to allow users to do a blurred search (case-insensitive, substring search, ignore white spaces). ([#21](https://github.com/brightlayer-ui/figma-plugins/issues/21))
+-   Option to scan and switch the whole document, rather than just the current page / selection. ([#19](https://github.com/etn-ccis/blui-figma-plugins/issues/19))
+-   Option to toggle on / off "exact match" to allow users to do a blurred search (case-insensitive, substring search, ignore white spaces). ([#21](https://github.com/etn-ccis/blui-figma-plugins/issues/21))
 
 ### Changed
 
 -   Grouped advanced options behind an "Advanced Options" dropdown.
--   Allowed white space / no white space around the delimiter `,` between different instance names. ([#16](https://github.com/brightlayer-ui/figma-plugins/issues/16))
+-   Allowed white space / no white space around the delimiter `,` between different instance names. ([#16](https://github.com/etn-ccis/blui-figma-plugins/issues/16))
 
 ## v2 (June 30, 2021)
 
