@@ -4,7 +4,7 @@
  */
 const UPDATE_MATERIAL = true;
 
-const BRIGHTLAYER_UI_META = 'https://raw.githubusercontent.com/brightlayer-ui/icons/master/svg/index.json';
+const BRIGHTLAYER_UI_META = 'https://raw.githubusercontent.com/etn-ccis/blui-icons/master/svg/index.json';
 
 type IconSet = { [name: string]: string[] };
 
