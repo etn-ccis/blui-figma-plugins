@@ -2,8 +2,10 @@
 
 ## v6 (Sept 26, 2022)
 
--   Added support for dark theme. ([#35](https://github.com/etn-ccis/blui-figma-plugins/issues/35); thanks, @Jerryjappinen!)
--   Added support for FigJam. ([#23](https://github.com/etn-ccis/blui-figma-plugins/issues/23))
+### Added
+
+-   Support for dark theme. ([#35](https://github.com/etn-ccis/blui-figma-plugins/issues/35); thanks, @Jerryjappinen!)
+-   Support for FigJam. ([#23](https://github.com/etn-ccis/blui-figma-plugins/issues/23))
 
 ## v5 (Mar 9, 2022)
 
