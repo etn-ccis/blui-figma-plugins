@@ -10,7 +10,7 @@ To sync up to Material Design and Brightlayer UI's latest icon meta file, open C
 
 **To update Material Design icons:** You will need to do `yarn && yarn build`, select those Material icon components you would like to update, and run the plugin.
 
-**To update Brightlayer UI icons:** Make sure [the meta data at Brightlayer UI master branch](https://github.com/brightlayer-ui/icons/blob/master/svg/index.json) is up-to-date.
+**To update Brightlayer UI icons:** Make sure [the meta data at Brightlayer UI master branch](https://github.com/etn-ccis/blui-icons/blob/master/svg/index.json) is up-to-date.
 Then change line 5 of `code.ts` to `false` and run `yarn && yarn build`. After that, select those Brightlayer UI icon components you would want to update, and run the plugin.
 
 Both Material and Brightlayer UI's meta data is updated every time you run `yarn build`.
