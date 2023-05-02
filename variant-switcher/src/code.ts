@@ -246,6 +246,8 @@ figma.ui.onmessage = (msg) => {
         if (msg.pluginStayOpen === 'false') {
             figma.closePlugin();
         }
+
+        switchCount = 0;
     } else if (msg.action === 'resize') {
         if (msg.showAdvancedOptions) {
             figma.ui.resize(DEFAULT_WIDTH, EXPANDED_HEIGHT);
