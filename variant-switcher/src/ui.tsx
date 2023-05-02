@@ -27,6 +27,7 @@ const App: React.FC = () => {
     const [deepSwitch, setDeepSwitch] = React.useState<'true' | 'false'>('false');
     const [fullDocument, setFullDocument] = React.useState<'true' | 'false'>('false');
     const [exactMatch, setExactMatch] = React.useState<'true' | 'false'>('true');
+    const [pluginStayOpen, setPluginStayOpen] = React.useState<'true' | 'false'>('false');
     const [mainComponentName, setMainComponentName] = React.useState('');
 
     const [showAdvancedOptions, setShowAdvancedOptions] = React.useState(false);
@@ -70,6 +71,12 @@ const App: React.FC = () => {
                 clearInterval(timerExactMatch);
             }
         }, 50);
+        const timerPluginStayOpen = setInterval(() => {
+            if (LOCAL_STORAGE_DATA[KEYS.PLUGIN_STAY_OPEN]) {
+                setExactMatch(LOCAL_STORAGE_DATA[KEYS.PLUGIN_STAY_OPEN]);
+                clearInterval(timerPluginStayOpen);
+            }
+        }, 50);
         const timerMainComponentName = setInterval(() => {
             if (LOCAL_STORAGE_DATA[KEYS.MAIN_COMPONENT_NAME]) {
                 setMainComponentName(LOCAL_STORAGE_DATA[KEYS.MAIN_COMPONENT_NAME]);
@@ -89,6 +96,7 @@ const App: React.FC = () => {
             clearInterval(timerDeepSwitch);
             clearInterval(timerFullDocument);
             clearInterval(timerExactMatch);
+            clearInterval(timerPluginStayOpen);
             clearInterval(timerMainComponentName);
             clearInterval(timerShowAdvancedOptions);
         };
@@ -107,6 +115,7 @@ const App: React.FC = () => {
                         deepSwitch,
                         fullDocument,
                         exactMatch,
+                        pluginStayOpen,
                         mainComponentName,
                         showAdvancedOptions,
                     },
@@ -121,6 +130,7 @@ const App: React.FC = () => {
         deepSwitch,
         fullDocument,
         exactMatch,
+        pluginStayOpen,
         mainComponentName,
         showAdvancedOptions,
     ]);
@@ -263,6 +273,30 @@ const App: React.FC = () => {
                         >
                             <label htmlFor={'exactMatch'} title={'Whether to do an exact match or a fuzzy search'}>
                                 Exact match
+                            </label>
+                        </div>
+                    </div>
+                    <div className={'checkbox-row'} style={{ alignItems: 'center' }}>
+                        <input
+                            type={'checkbox'}
+                            onChange={(e) => {
+                                setExactMatch(e.target.value === 'true' ? 'false' : 'true');
+                            }}
+                            name={'pluginStayOpen'}
+                            value={pluginStayOpen}
+                            checked={pluginStayOpen === 'true'}
+                        />
+                        <div
+                            onClick={(e) => {
+                                setPluginStayOpen(pluginStayOpen === 'true' ? 'false' : 'true');
+                            }}
+                            style={{ height: 'unset' }}
+                        >
+                            <label
+                                htmlFor={'pluginStayOpen'}
+                                title={'Whether the plugin will stay open after clicking "Switch Variants"'}
+                            >
+                                Plugin Stays Open
                             </label>
                         </div>
                     </div>

@@ -1,5 +1,11 @@
 # Changelog
 
+## v7 (May 3, 2023)
+
+### Added
+
+-   Support for an advanced option "Plugin Stays Open". ([#46](https://github.com/etn-ccis/blui-figma-plugins/issues/46))
+
 ## v6 (Sept 26, 2022)
 
 ### Added

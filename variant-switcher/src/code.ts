@@ -8,8 +8,8 @@ import { KEYS } from './shared';
 import { fuzzyMatch } from './utils';
 
 const DELIMITER = ',';
-const EXPANDED_HEIGHT = 437;
-const COLLAPSED_HEIGHT = 234;
+const EXPANDED_HEIGHT = 460;
+const COLLAPSED_HEIGHT = 224;
 const DEFAULT_WIDTH = 300;
 
 figma.showUI(__html__, { themeColors: true, visible: false, width: DEFAULT_WIDTH, height: COLLAPSED_HEIGHT });
@@ -31,6 +31,9 @@ figma.clientStorage.getAsync(KEYS.FULL_DOCUMENT).then((val) => {
 });
 figma.clientStorage.getAsync(KEYS.EXACT_MATCH).then((val) => {
     if (val) figma.ui.postMessage({ param: KEYS.EXACT_MATCH, val });
+});
+figma.clientStorage.getAsync(KEYS.PLUGIN_STAY_OPEN).then((val) => {
+    if (val) figma.ui.postMessage({ param: KEYS.PLUGIN_STAY_OPEN, val });
 });
 figma.clientStorage.getAsync(KEYS.MAIN_COMPONENT_NAME).then((val) => {
     if (val) figma.ui.postMessage({ param: KEYS.MAIN_COMPONENT_NAME, val });
@@ -174,6 +177,7 @@ figma.ui.onmessage = (msg) => {
         figma.clientStorage.setAsync(KEYS.DEEP_SWITCH, msg.deepSwitch);
         figma.clientStorage.setAsync(KEYS.FULL_DOCUMENT, msg.fullDocument);
         figma.clientStorage.setAsync(KEYS.EXACT_MATCH, msg.exactMatch);
+        figma.clientStorage.setAsync(KEYS.PLUGIN_STAY_OPEN, msg.pluginStayOpen);
         figma.clientStorage.setAsync(KEYS.MAIN_COMPONENT_NAME, msg.mainComponentName);
         figma.clientStorage.setAsync(KEYS.SHOW_ADVANCED_OPTIONS, msg.showAdvancedOptions);
 
@@ -238,7 +242,10 @@ figma.ui.onmessage = (msg) => {
         } else {
             figma.notify(`Changed ${switchCount} instances' "${notifyPropertyName}" to "${notifyToVariant}".`);
         }
-        figma.closePlugin();
+
+        if (msg.pluginStayOpen === 'false') {
+            figma.closePlugin();
+        }
     } else if (msg.action === 'resize') {
         if (msg.showAdvancedOptions) {
             figma.ui.resize(DEFAULT_WIDTH, EXPANDED_HEIGHT);
