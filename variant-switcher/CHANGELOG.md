@@ -1,6 +1,6 @@
 # Changelog
 
-## v7 (May 3, 2023)
+## v7 (May 5, 2023)
 
 ### Added
 
