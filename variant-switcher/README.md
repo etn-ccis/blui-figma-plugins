@@ -18,6 +18,7 @@ The Variant Switcher plugin has several user controls:
 | Deep Switch          | When unchecked, the plugin will not switch children after switching their parent instances. ([Diagram explanation](./_assets_/deep-switch-diagram.png))                            | (yes)     |
 | Switch Full Document | When checked, the plugin will traverse through the entire document. When unchecked, the plugin will only switch the current selection, or the current page if nothing is selected. | (yes)     |
 | Exact Match          | Whether to check for the exact property name and variant name or do a fuzzy search instead.                                                                                        | (yes)     |
+| Plugin Stays Open    | Whether the plugin will stay open after clicking "Switch Variants"                                                                                                                 | (no)      |
 | Main Component Name  | Change only instances with the specified main component name                                                                                                                       | no        |
 
 ## Example
