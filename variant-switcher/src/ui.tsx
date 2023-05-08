@@ -280,7 +280,7 @@ const App: React.FC = () => {
                         <input
                             type={'checkbox'}
                             onChange={(e) => {
-                                setExactMatch(e.target.value === 'true' ? 'false' : 'true');
+                                setPluginStayOpen(e.target.value === 'true' ? 'false' : 'true');
                             }}
                             name={'pluginStayOpen'}
                             value={pluginStayOpen}

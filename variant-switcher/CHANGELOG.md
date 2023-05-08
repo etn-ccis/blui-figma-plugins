@@ -1,6 +1,12 @@
 # Changelog
 
-## v7 (May 5, 2023)
+## v8 (May 8, 2023)
+
+### Fixed
+
+-   Fixed an issue that causes the "Plugin Stays Open" checkbox to not work properly.
+
+## v7 (May 8, 2023)
 
 ### Added
 
