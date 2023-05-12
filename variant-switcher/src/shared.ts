@@ -11,6 +11,7 @@ export const KEYS = {
     DEEP_SWITCH: 'deep-switch',
     FULL_DOCUMENT: 'full-document',
     EXACT_MATCH: 'exact-match',
+    PLUGIN_STAY_OPEN: 'plugin-stay-open',
     MAIN_COMPONENT_NAME: 'main-component-name',
     SHOW_ADVANCED_OPTIONS: 'show-advanced-options',
 };

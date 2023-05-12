@@ -1,9 +1,23 @@
 # Changelog
 
+## v8 (May 8, 2023)
+
+### Fixed
+
+-   Fixed an issue that causes the "Plugin Stays Open" checkbox to not work properly.
+
+## v7 (May 8, 2023)
+
+### Added
+
+-   Support for an advanced option "Plugin Stays Open". ([#46](https://github.com/etn-ccis/blui-figma-plugins/issues/46))
+
 ## v6 (Sept 26, 2022)
 
--   Added support for dark theme. ([#35](https://github.com/etn-ccis/blui-figma-plugins/issues/35); thanks, @Jerryjappinen!)
--   Added support for FigJam. ([#23](https://github.com/etn-ccis/blui-figma-plugins/issues/23))
+### Added
+
+-   Support for dark theme. ([#35](https://github.com/etn-ccis/blui-figma-plugins/issues/35); thanks, @Jerryjappinen!)
+-   Support for FigJam. ([#23](https://github.com/etn-ccis/blui-figma-plugins/issues/23))
 
 ## v5 (Mar 9, 2022)
 
