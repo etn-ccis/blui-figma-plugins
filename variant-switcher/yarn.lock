@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@brightlayer-ui/prettier-config/-/prettier-config-1.0.3.tgz#e40a7ae7435c6fd5118acbf249080e0aa81e93af"
   integrity sha512-EYm3+V7Qd+oYEF+8FadsXAZqXryEHHbGnrV1BMp9selhABjceqUqXPVE4Sn3SKWQdBNJ3En2A3EzgrzRbvRTaw==
 
-"@figma/plugin-typings@^1.58.0":
-  version "1.58.0"
-  resolved "https://registry.yarnpkg.com/@figma/plugin-typings/-/plugin-typings-1.58.0.tgz#88ae0e57e2ac74203d401f2a70e95e93c470e093"
-  integrity sha512-to6hFysqZYACz4VNgaBXflOVS+1pbXGNVcezDmQEMcADDkIZeAZ71Zfqf/B2YDRmU3sM1xX5Q5NkRGhjCuLOLg==
+"@figma/plugin-typings@^1.80.0":
+  version "1.80.0"
+  resolved "https://registry.yarnpkg.com/@figma/plugin-typings/-/plugin-typings-1.80.0.tgz#8044e52145c4534d0ae6a3f80bb5ee4bf5cbcbfe"
+  integrity sha512-dosTVp5wj8u0pn5/pP+Ii7u/iurwbhEkT9kNbxkyrRf59cjsfbMKw5i7PyRrOUOyBmsH3edhCfh9jMff7G6tjQ==
 
 "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.8":
   version "7.0.11"
