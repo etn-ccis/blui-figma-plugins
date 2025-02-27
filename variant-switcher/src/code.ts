@@ -57,7 +57,7 @@ function trimPropertyWhiteSpace(str: string): string[] {
     return str.split(DELIMITER).map((prop) => prop.trim());
 }
 
-function traverse(
+async function traverse(
     node: any,
     propertyName: string,
     fromVariant: string,
@@ -71,8 +71,11 @@ function traverse(
 
     let parentSwapped = false;
 
-    if (node && node.type == 'INSTANCE' && node.mainComponent.parent && node.variantProperties) {
-        let nodeProperties = trimPropertyWhiteSpace(node.mainComponent.name);
+    if (node && node.type == 'INSTANCE' && node.variantProperties) {
+        const mainComponent = await node.getMainComponentAsync();
+        if (!mainComponent || !mainComponent.parent) return;
+        
+        let nodeProperties = trimPropertyWhiteSpace(mainComponent.name);
 
         // the instance comes from a component with variances set in them
         // and there is the variant we are looking for
@@ -113,20 +116,20 @@ function traverse(
 
         // do the swapping
         if (
-            (mainComponentName !== '' && mainComponentName === node.mainComponent.parent.name) ||
+            (mainComponentName !== '' && mainComponentName === mainComponent.parent.name) ||
             mainComponentName === ''
         ) {
-            if (node.mainComponent.parent.type === 'COMPONENT_SET' && propertyIndex !== -1 && !isOnToVariant) {
+            if (mainComponent.parent.type === 'COMPONENT_SET' && propertyIndex !== -1 && !isOnToVariant) {
                 let changeToSibling: ComponentNode;
                 if (exactMatch) {
                     nodeProperties[propertyIndex] = `${propertyName}=${toVariant}`;
-                    changeToSibling = node.mainComponent.parent.findChild(
+                    changeToSibling = mainComponent.parent.findChild(
                         (sibling: ComponentNode) =>
                             trimPropertyWhiteSpace(sibling.name).join(DELIMITER) === nodeProperties.join(DELIMITER)
                     );
                 } else {
                     const nodePropertiesJSON = { ...node.variantProperties };
-                    changeToSibling = node.mainComponent.parent.findChild((sibling: ComponentNode): boolean => {
+                    changeToSibling = mainComponent.parent.findChild((sibling: ComponentNode): boolean => {
                         const siblingNodeProperties = trimPropertyWhiteSpace(sibling.name);
                         if (fuzzyMatch(propertyName, toVariant, siblingNodeProperties[propertyIndex])) {
                             const propertyToChange = siblingNodeProperties[propertyIndex].split('=')[0].trim();
@@ -146,7 +149,7 @@ function traverse(
                 // we couldn't find a good sibling with the exact property,
                 // but try again to find at least one with the property we care about
                 else {
-                    changeToSibling = node.mainComponent.parent.findChild(
+                    changeToSibling = mainComponent.parent.findChild(
                         (sibling: ComponentNode) => sibling.variantProperties[propertyName] === toVariant
                     );
 
@@ -163,12 +166,12 @@ function traverse(
     // if deepSwitch is checked and parent is swapped, we don't want to look further in this layer tree
     if ('children' in node && (deepSwitch || !parentSwapped)) {
         for (const child of node.children) {
-            traverse(child, propertyName, fromVariant, toVariant, deepSwitch, exactMatch, mainComponentName);
+            await traverse(child, propertyName, fromVariant, toVariant, deepSwitch, exactMatch, mainComponentName);
         }
     }
 }
 
-figma.ui.onmessage = (msg) => {
+figma.ui.onmessage = async (msg) => {
     if (msg.action === 'submit') {
         // remember these params and save to client storage
         figma.clientStorage.setAsync(KEYS.PROPERTY_NAME, msg.propertyName);
@@ -183,8 +186,9 @@ figma.ui.onmessage = (msg) => {
 
         // the user want to switch the whole document
         if (msg.fullDocument === 'true') {
+            await figma.loadAllPagesAsync();
             for (const pageNode of figma.root.children) {
-                traverse(
+                await traverse(
                     pageNode,
                     msg.propertyName,
                     msg.fromVariant,
@@ -198,7 +202,7 @@ figma.ui.onmessage = (msg) => {
         // the user selected something, then we look at the selection
         else if (figma.currentPage.selection.length) {
             for (const node of figma.currentPage.selection) {
-                traverse(
+                await traverse(
                     node,
                     msg.propertyName,
                     msg.fromVariant,
@@ -211,7 +215,8 @@ figma.ui.onmessage = (msg) => {
         }
         // the user didn't select anything, then let's change the entire page
         else {
-            traverse(
+            await figma.currentPage.loadAsync();
+            await traverse(
                 figma.currentPage,
                 msg.propertyName,
                 msg.fromVariant,
