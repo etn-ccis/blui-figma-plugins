@@ -1,5 +1,12 @@
 # Changelog
 
+## v9 (Feb 27, 2025)
+
+### Added
+
+-   Added Dynamic Loading to help the plugin load faster. ([#97](https://github.com/etn-ccis/blui-figma-plugins/pull/97); thanks, @andrewlevada!)
+-   Declared in manifest file that no network access is required for the plugin.
+
 ## v8 (May 8, 2023)
 
 ### Fixed
