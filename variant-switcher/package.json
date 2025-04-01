@@ -28,7 +28,7 @@
     },
     "devDependencies": {
         "@brightlayer-ui/prettier-config": "^1.0.3",
-        "@figma/plugin-typings": "^1.108.0",
+        "@figma/plugin-typings": "^1.109.0",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^17.0.4",
         "npm-license-crawler": "^0.2.1",
